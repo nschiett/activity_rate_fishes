@@ -522,7 +522,7 @@ ggplot(com) +
                      labels = c("FMR", "SMR"), begin = 0.4, end = 1) +  
   theme_bw()+
   theme(axis.title.x=element_blank(), axis.title.y=element_blank(), 
-        text = element_text( size = 12))  +
+        text = element_text(size = 12))  +
   labs(fill = "")
 
 ggsave("output/plots/community_plots.png", p_com, width = 10, height = 8)
@@ -537,7 +537,8 @@ make_plot_community_ab <- function(moorea){
     group_by(Site_name, Method_area, species) %>%
     dplyr::summarise(ab = sum(Abundance)) %>%
     mutate(ab_m2 = ab/Method_area) %>%
-    filter(!species %in% c("Chmorurus spilurus", "Chaetodon pelewensis"))
+    filter(!species %in% c("Chlorurus spilurus", "Chaetodon pelewensis")) %>%
+    mutate(species = as.factor(species))
   
   plot <-
   ggplot(moorea_s)+ 
@@ -552,6 +553,213 @@ make_plot_community_ab <- function(moorea){
   ggsave("output/plots/community_plot_abundance.png", plot, width = 10, height = 8)
   return(plot)
 }
+
+###### figure 5 revised #####
+
+
+siteplot <- function(site, com, moorea_s){
+  
+  col <- fish(option = "Chaetodon_ephippium", n = 7)[-3]
+  
+  plot1 <-
+  ggplot(com[com$Site_name == site, ]) +
+    geom_bar(aes(x = name, y = value), fill = "grey" ,
+             stat = "identity", alpha = 0.9) +
+    geom_hline(aes(yintercept = 1.5 * value), 
+               data = filter(com, name == "SMR", Site_name == site), linetype = 2) +
+    theme_bw() +
+    theme(axis.title.x=element_blank(), 
+          text = element_text( size = 12),
+          axis.text = element_text(color = "black"), 
+          panel.grid.minor = element_blank())  +
+    labs(y = expression(paste("Metabolic rate (g ", O[2], ".", d^{-1} ,")")),
+         title = site) 
+  
+  plot2 <-
+    ggplot(moorea_s[moorea_s$Site_name == site,])+ 
+    geom_bar(aes(x = "1", y = ab_m2, fill = species, color = species), stat = "identity")+
+    xlab("") +
+    labs(y = expression(paste("Fish abundance ", (m^{-2}))))+
+    scale_color_manual(values = col, drop = FALSE) +
+    scale_fill_manual(values = col, drop = FALSE) +
+    theme_bw() + labs(x = " ", title = " ") +
+    theme(legend.position = "none",  
+          axis.title.x = element_blank(), axis.title.y = element_blank(), 
+          panel.grid.major = element_blank(), panel.grid.minor = element_blank(), 
+          axis.text = element_blank(), axis.ticks = element_blank(),
+          panel.border = element_blank(), plot.margin = unit(c(2,0,4,0), "mm"))
+  
+  plot_grid(plot1, plot2, nrow = 1,ncol = 2, rel_widths = c(4,1))
+
+}
+
+
+
+make_fig5 <- function(moorea, field_summary){
+  
+  com <- moorea %>% left_join(field_summary) %>%
+    drop_na() %>%
+    ungroup() %>%
+    filter(!Site_name %in% c("Moorea Entre 2 Baies", "Moorea Haapiti")) %>%
+    dplyr::mutate(FMR = (FMR_m + smr_m)/(2)) %>%
+    mutate(fmr = FMR * Abundance, smr = smr_m * Abundance) %>%
+    mutate(fmr = fmr/Method_area,
+           smr = smr/Method_area) %>%
+    group_by(Site_name, Lat, Long) %>%
+    dplyr::summarise(smr = sum(smr),
+                     fmr = sum(fmr)) %>%
+    group_by(Site_name) %>%
+    dplyr::summarise(SMR = mean(smr),
+                     FMR = mean(fmr)) %>%
+    mutate(ratio = FMR/SMR, l = SMR * 2) %>%
+    group_by(Site_name) %>%
+    pivot_longer(c(SMR, FMR)) 
+  
+  moorea_s <- moorea %>%
+    filter(!Site_name %in% c("Moorea Entre 2 Baies", "Moorea Haapiti")) %>%
+    group_by(Site_name, Method_area, species) %>%
+    dplyr::summarise(ab = sum(Abundance)) %>%
+    mutate(ab_m2 = ab/Method_area) %>%
+    filter(!species %in% c("Chlorurus spilurus", "Chaetodon pelewensis")) %>%
+    mutate(species = as.factor(species))
+  
+  a <- siteplot("Gendron", com, moorea_s)
+  b <- siteplot("Tiahura", com, moorea_s)
+  c <- siteplot("Entre 2 baies", com, moorea_s)
+  d <- siteplot("Pihaena", com, moorea_s)
+  e <- siteplot("Aroa", com, moorea_s)
+  f <- siteplot("Nuarei", com, moorea_s)
+  g <- siteplot("Temae", com, moorea_s)
+  h <- siteplot("Motu Ahi", com, moorea_s)
+  i <- siteplot("Afareaitu", com, moorea_s)
+  j <- siteplot("Maatea", com, moorea_s)
+  k <- siteplot("Haapiti", com, moorea_s)
+  m <- siteplot("Taotaha", com, moorea_s)
+  n <- siteplot("Tetaiuo", com, moorea_s)
+  
+  
+  coast <- sf::st_read("data/coastline.shp") %>%
+    st_transform(st_crs("+proj=longlat +datum=WGS84"))
+  
+  sites <-  moorea %>%
+    filter(!Site_name %in% c("Moorea Entre 2 Baies", "Moorea Haapiti")) %>%
+    select(Lat, Long, Site_name) %>%
+    group_by(Site_name) %>%
+    summarize_all(mean)
+  
+  map <-
+    ggplot() +
+    geom_sf(data = coast, fill = "grey80") +
+    theme_bw() +
+    geom_point(aes(y = Lat, x = Long), data = sites) +
+    geom_label_repel(aes(y = Lat, x = Long, label = Site_name), data = sites) +
+    coord_sf() +
+    theme(text = element_text(color = "black"),
+          axis.title.x = element_blank(), axis.title.y = element_blank(), 
+          panel.grid.major = element_blank(), panel.grid.minor = element_blank(), 
+          axis.text = element_blank(), axis.ticks = element_blank())
+  
+  layout <- "
+  ABCDE
+  NOOOF
+  MOOOG
+  LKJIH
+  "
+  col <- fish(option = "Chaetodon_ephippium", n = 7)
+ 
+  l <-
+    ggplot() +
+    geom_text(aes(x = 2, y = 1:6, label = rev(sort(unique(moorea_s$species)))),
+              size = 3.5, fontface = 3, hjust = 0) +
+    add_fishape(family = "Serranidae", option = "Cephalopholis_argus",
+                fill = col[1],
+                xmin = 1.5, xmax = 2, ymin = 5.5, ymax = 6.5) +
+    add_fishape(family = "Chaetodontidae", option = "Chaetodon_ornatissimus",
+                fill = col[2],
+                xmin = 1.5, xmax = 2, ymin = 4.5, ymax = 5.5) +
+    add_fishape(family = "Acanthuridae", option = "Ctenochaetus_striatus",
+                fill = col[4],
+                xmin = 1.5, xmax = 2, ymin = 3.5, ymax = 4.5) +
+    add_fishape(family = "Acanthuridae", option = "Naso_lituratus",
+                fill = col[5],
+                xmin = 1.5, xmax = 2, ymin = 2.5, ymax = 3.5) +
+    add_fishape(family = "Balistidae", option = "Odonus_niger",
+                fill = col[6],
+                xmin = 1.5, xmax = 2, ymin = 1.5, ymax = 2.5) +
+    add_fishape(family = "Acanthuridae", option = "Zebrasoma_scopas",
+                fill = col[7],
+                xmin = 1.5, xmax = 2, ymin = 0.5, ymax = 1.5) +
+    xlim(c(1.5, 3)) + ylim(c(0, 7)) +
+    theme_void()
+  
+  
+  combined <-
+    a+b+c+d+e+f+g+h+i+j+k+l+m+n+map+ plot_layout(design = layout)
+  
+  ggsave("output/plots/figure5.png", combined, width = 12, height = 10)
+  
+}
+
+# Get lengths of test measurements
+  
+##### Size correction graph #####
+# 3d distance function
+d <- function(df){
+  d3D <- sqrt((df$X[1]-df$X[2])^2+(df$Y[1]-df$Y[2])^2+(df$Z[1]-df$Z[2])^2)
+  return(d3D)
+}
+# size function
+get_size <- function(file){
+  dist <- vector()
+  camdist <- vector()
+  f <- read.csv(file,skip = 1)
+  f <- plyr::arrange(f, Event)
+  for (i in unique(f$Event)) {
+    sub <- f[f$Event == i,]
+    dist[which(unique(f$Event) == i)] <- d(sub)
+    camdist[which(unique(f$Event) == i)] <- mean(sub$Nearest.Camera.Distance)
+  }
+  result <- data.frame(Object = unique(f$Object.s.), Event=unique(f$Event),length=dist, camdist = camdist)
+  return(result)
+}
+lm_eqn <- function(df){
+  m <- lm(y ~ x, df);
+  eq <- substitute(italic(y) == a + b %.% italic(x)*","~~italic(r)^2~"="~r2,
+                   list(a = format(coef(m)[1], digits = 2),
+                        b = format(coef(m)[2], digits = 2),
+                        r2 = format(summary(m)$r.squared, digits = 3)))
+  as.character(as.expression(eq));
+}
+    
+make_plot_sizecor <- function(){
+      
+  fileN1 <- "data/test_N1.csv"
+  testN1 <- get_size(file = fileN1)
+  ttN1 <- plyr::ldply(strsplit(as.character(testN1$Object), split = " "))[,1]
+  testN1$distance <- as.numeric(unlist(strsplit(ttN1, "m")))
+  testN1$syst_cam <- "N1"
+  fileN2 <- "data/test_N2.csv"
+  testN2 <- get_size(file = fileN2)
+  ttN2 <- plyr::ldply(strsplit(as.character(testN2$Object), split = " "))[,1]
+  testN2$distance <- as.numeric(unlist(strsplit(ttN2, "m")))
+  testN2$syst_cam <- "N2"
+  test <- rbind(testN1, testN2)
+  # all measurements are 20cm
+  plot <-
+    ggplot(test)+
+    geom_point(aes(x = log(camdist), y = log(length - 20 ), color = syst_cam, fill = syst_cam))+
+    geom_smooth(aes(x = log(camdist), y = log(length - 20), color = syst_cam, fill = syst_cam), se = TRUE, method = "lm")+
+    labs(y = "log(error) (cm)", x = "log(distance) (cm)") +
+    scale_color_fish_d(option = "Chaetodon_ephippium", name = "Camera system", begin = 0.2, end = 0.9) +
+    scale_fill_fish_d(option = "Chaetodon_ephippium", name = "Camera system", begin = 0.2, end = 0.9) +
+    theme_bw() +
+    theme(legend.position = "bottom", text = element_text(size = 16),
+          axis.text = element_text( size = 16, color = "black"))
+  ggsave("output/plots/annex_measurementcor.png", width = 8, height = 6)
+  return(plot)
+  
+}
+
 
 
 load_fig1 <- function(){

@@ -31,8 +31,10 @@ plan <- drake_plan(
   plot_fsa = make_plot_fsa(field_summary),
   plot_slopes = make_plot_slopes(slopes),
   plot_combined = make_plot_combined(plot_fsa, plot_slopes),
-  plot_community_mr = make_plot_community_mr(field_summary, moorea),
+  #plot_community_mr = make_plot_community_mr(field_summary, moorea),
   plot_community_ab = make_plot_community_ab(moorea),
+  figure5 = make_fig5(moorea, field_summary),
+  plot_annex = make_plot_sizecor(),
   fig1 = load_fig1(),
   ## text
   main_text_doc = rmarkdown::render(knitr_in("text/main_text.Rmd"), 

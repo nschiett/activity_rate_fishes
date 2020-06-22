@@ -21,6 +21,9 @@ library(gridExtra)
 library(taxize)
 library(rfishbase)
 library(broom)
+library(sf)
+library(ggrepel)
+library(cowplot)
 
 options(buildtools.check = function(action) TRUE )
 

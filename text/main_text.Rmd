@@ -6,6 +6,7 @@ output:
     fig_caption: yes
     reference_docx: ../text/word_template.docx
 bibliography: ../text/activity.bib
+csl: vancouver.csl
 ---
 
 ```{r setup, include = FALSE}
@@ -15,10 +16,10 @@ source("../R/packages.R")
 ```
 \pagenumbering{arabic}
 
-# Stereovideo monitoring and physiological trials reveal metabolic demands of reef fishes in the wild
+# Stereo-video monitoring and physiological trials reveal metabolic demands of reef fishes in the wild
      
 
-\noindent Nina M. D. Schiettekatte^1,2\*^, Francesca Conte^1,2\*^, Beverly French^3^, Simon J. Brandl^1,2,4^, Chris Fulton^5^, Alexandre Merciere^1,2^, Tommy Norin^6^, Sébastien Villéger^7^, Valeriano Parravicini^1,2^
+\noindent Nina M. D. Schiettekatte^1,2\*^, Francesca Conte^1,2\*^, Beverly French^3^, Simon J. Brandl^1,2,4^, Christopher J. Fulton^5^, Alexandre Mercière^1,2^, Tommy Norin^6^, Sébastien Villéger^7^, Valeriano Parravicini^1,2^
 
 
 \singlespace \fontsize{10}{12}\selectfont 
@@ -30,25 +31,27 @@ source("../R/packages.R")
 
 \noindent ^3^ Center for Marine Biodiversity and Conservation, Scripps Institution of Oceanography, University of California, San Diego, CA, USA
 
-\noindent ^4^ ??
+\noindent ^4^ CESAB-FRB, 5 Rue de l'Ecole de Médecine, 3400 Montpellier, France
 
 \noindent ^5^ Research School of Biology, The Australian National University, Canberra, ACT, Australia
 
-\noindent ^6^ Technical University of Denmark, DTU Aqua: National Institute of Aquatic Resources, 2800 Kgs, Lyngby, Denmark
+\noindent ^6^ DTU Aqua: National Institute of Aquatic Resources, Technical University of Denmark, 2800 Kgs. Lyngby, Denmark
 
-\noindent ^7^  Université Montpellier, CNRS, IFREMER, IRD, 34 095 Montpellier, France
+\noindent ^7^  MARBEC, Université de Montpellier, CNRS, IFREMER, IRD, 34 095 Montpellier, France
 
 \doublespace \fontsize{12}{14}\selectfont
 \setlength{\parindent}{15pt}
 
-\noindent \* Contributed equally
+\noindent \* These authors contributed equally
 
 \noindent \textbf{Correspondence to:} N.M.D.S.; Email: nina.schiettekatte@gmail.com
 
 ## Abstract
 
-The metabolic rate of living organisms is an underlying driver of all processes within ecosystems in our transitioning world. In the marine realm, fishes perform an essential consumer role. However, the field metabolic rate, representing the pace of life of fishes in the wild is still poorly documented. Moreover, little is known about how field metabolic rates scale with biomass (i.e. the metabolic scaling coefficient). This limits our ability to accurately estimate the metabolic rate of wild fish communities. Here, we propose a novel approach to quantify the field metabolic rate by combining traditional respirometry techniques, and stereo-video systems, and we exemplify our approach with a case study of seven coral reef fish species. Specifically, we quantify the standard and maximum metabolic rate for each species across varying body mass. Further, we measured both the body size and the swimming speed of multiple individuals throughout the day in situ. Finally, relying on known relationships between metabolic rates and swimming speeds, we predicted field metabolic rates for each species across their size range. Finally, we scaled up our estimates at assemblage level according to visual census data in Mo’orea (French Polynesia). We show that the activity scope (i.e. the ratio between the field metabolic rate and the standard metabolic rate) varies on average between 1.2 and 1.8 across species. We further demonstrate that, for certain species, the scaling coefficient is well above the theoretical value of 0.75. Finally, scaling up to the assemblage level, exemplifies the potential pitfalls of comparing the metabolic rates of heterogeneous reef fish assemblages based on standard metabolic rates instead of field metabolic rates. We suggest that the coupling of physiological trials with stereo-video analysis provides a useful, non-destructive path to estimate field metabolic rates of fishes in their natural environment, which opens the door to more accurate predictions of the role of fishes in the flux of energy and elements in ecosystems. 
+Organismal metabolic rates are the basis of energy and nutrient fluxes through ecosystems. In the marine realm, fishes are the most prominent consumer species. However, their metabolic demands in the wild (field metabolic rates; FMR) are poorly documented. We introduce a novel approach to estimating FMR by combining laboratory-based respirometry and field-based stereo-video systems. We exemplify our approach by focusing on seven coral reef fish species, for which we quantified standard- and maximum metabolic rates (SMR and MMR) in the lab, and body sizes and swimming speeds in the field. Based on the relationships between metabolism, body size, and swimming speeds, we show that the activity scope (the ratio between FMR and SMR) varies from 1.2 to 3.2 across species and body sizes. Furthermore, we demonstrate that the scaling coefficient for FMR can substantially exceed the widely assumed value of 0.75. Finally, by scaling organismal estimates to the assemblage-level, we reveal that the use of SMR may lead to a severe underestimation of community metabolic demand. As a non-destructive, widely applicable technique, our approach can improve our ability to estimate elemental fluxes mediated by a critically important group of aquatic animals.
 
+## Keywords
+fish, swimming speed, field metabolic rate, activity, activity scope, scaling coefficient, stereo-video, metabolism
 
 ## Introduction
 
@@ -56,135 +59,135 @@ The metabolic rate of living organisms is an underlying driver of all processes 
 \noindent Anthropogenic stressors such as climate change, over-harvesting, and pollution are globally affecting biological communities at an unprecedented rate [@Halpern2008; @Venter2016]. 
 There is a growing concern that impacted communities may not be able to sustain key ecosystem functions and provide indispensable ecosystem services to humanity [@Cardinale2012]. 
 In this context, tools to quantify and monitor ecosystem processes are indispensable [@Tilman2014]. 
-However, while there is a long-standing tradition in measuring ecological processes in mesocosms and controlled in situ experiments, the assessment of rates of ecological processes in natural conditions is still in its infancy [@Reich2012], especially for marine ecosystems [@Brandl2019science]. 
+However, while there is a long-standing tradition in measuring ecological processes in mesocosms and controlled *in situ* experiments, the assessment of rates of ecological processes in natural conditions is still in its infancy [@Reich2012], especially for marine ecosystems [@Brandl2019front]. 
       
-\noindent In the marine realm, fishes represent one of the most thoroughly studied, ecologically important, and economically valuable group of consumers [@Bozec2004; @Tamayo2018]. Yet, due to their mobility and the challenges of the marine environment, measuring nutrient and energy fluxes derived from fish communities is complex [@Wilson2010]. 
-Nevertheless, there have been several attempts to quantify ecological functions performed by fishes, ranging from their contributions to nutrient and carbon cycling to herbivory and biomass production [@Villeger2017; @Brandl2019front]. 
+\noindent In the marine realm, fishes represent one of the most thoroughly studied, ecologically important, and economically valuable group of consumers [@Bozec2004; @Tamayo2018]. Therefore, despite the complexity of measuring the contribution of mobile species to ecosystem fluxes [@Wilson2010], several attempts have been made to quantify ecological functions performed by fishes, ranging from their contributions to nutrient and carbon cycling to herbivory and biomass production [@Villeger2017; @Brandl2019front]. 
 These functions are usually quantified at the individual level, where some empirical or theoretical knowledge about the physiological requirements of individuals facilitate calculations of organismal processes, that can then be scaled up to community levels through an additive framework [@Barneche2014;  @Allgeier2014; @Brandl2019science; @Morais2019]. While there are inherent limitations to this approach, individual-based modeling currently represents our best means to quantify ecological processes across communities of mobile, aquatic organisms. Nevertheless, the accuracy of these approaches inevitably depends on our capacity to precisely estimate physiological requirements and expenditures of individuals in their natural environment.
 
-\noindent The metabolic rate of living organisms is an essential determinant of their physiological requirements and therefore represents a crucial parameter to estimate the of the flow of energy and nutrients in any ecosystem [@Brown2004; @Allen2005]. 
-Theory predicts that individual metabolic rate increases sub‐linearly with body mass according to a power function with a scaling coefficient of approximately 0.75 [@West1997; @Gillooly2001; @Brown2004]. 
-This theoretical value has been widely accepted and holds roughly true for marine fishes [@Barneche2014]. 
+\noindent The metabolic rate of living organisms is an essential determinant of their physiological requirements and therefore represents a crucial parameter to estimate the flow of energy and nutrients in any ecosystem [@Brown2004; @Allen2005]. 
+Theory predicts that individual metabolic rate increases sub‐linearly with body mass according to a power function with an exponent (scaling coefficient) of approximately 0.75 [@West1997; @Gillooly2001; @Brown2004]. 
+This theoretical value has been widely accepted and appears to hold roughly true for marine fishes [@Barneche2014]. 
 
-\noindent Metabolic rates of fishes are generally evaluated through two metrics: i) standard metabolic rate [SMR; @Fry1957; @Vinberg1960], which corresponds to the metabolic rate of an inactive and fasting individual [@Clark2013], and ii) maximum metabolic rate (MMR), which corresponds to the aerobic metabolic rate of an animal that is exercising at full capacity [@Norin2016]. Knowledge of these two metrics allows for calculations of a fish's Factorial Aerobic Scope (FAS), which is the ratio between MMR and SMR and represents the capacity to elevate metabolic rate above maintenance to support energetically demanding tasks such as physical activity (Clark et al., 2013). FAS tends to increase with body mass, as the scaling coefficient of MMR is often observed to be higher than 0.75 [@Killen2007; @Glazier2005]. Both SMR and MMR can be estimated relatively accurately in the laboratory through measurements of oxygen uptake rates [@Binning2013; @Brett1964; @Clark2013; @Clark2012; @Norin2011; @Norin2016]. However, animals in the wild rarely reside at SMR or exercise maximally. Thus, calculations of energy expenditures in fishes are hamstrung by our capacity to accurately estimate metabolic rates in wild fishes that pursue their normal, daily activities in their natural environment.
+\noindent Metabolic rates of fishes are generally evaluated through two metrics: i) standard metabolic rate (SMR) [@Fry1957; @Vinberg1960], which corresponds to the metabolic rate of an inactive and fasting individual [@Clark2013]; and ii) maximum metabolic rate (MMR), which corresponds to the aerobic metabolic rate of an animal that is exercising at full capacity [@Norin2016]. Knowledge of these two metrics allows for calculations of a fish's factorial aerobic scope (FAS), which is the ratio between MMR and SMR and represents the capacity to elevate metabolic rate above maintenance to support energetically demanding tasks such as physical activity [@Clark2013]. FAS tends to increase with body mass, as the scaling coefficient of MMR is often observed to be higher than the one of SMR [@Killen2007; @Glazier2005]. Both SMR and MMR can be estimated relatively accurately in the laboratory through measurements of oxygen uptake rates [@Clark2013; @Norin2016; @Svendsen2016; @Chabot2016]. However, animals in the wild rarely reside at SMR or exercise maximally. Thus, calculations of energy expenditures in fishes are hamstrung by our capacity to accurately estimate metabolic rates in wild fishes that pursue their normal, daily activities in their natural environment.
 
 \noindent The field metabolic rate (FMR) represents the average metabolic rate of an individual in the wild [@Chung2019; @Nagy2005] and lies somewhere between SMR and MMR [@Roche2013].
-On average, free-living fishes in their natural habitats will only exploit a given proportion of their aerobic scope [@Norin2016]. Thus, the Factorial Scope for Activity (FSA), which corresponds to the ratio between the FMR and the SMR, is a better reflection of energy expenditure in the wild [@Chung2019], although internal homeostatic processes such as digestion and reproduction also bear a given energetic cost. In terrestrial vertebrates, where the doubly-labeled water technique has allowed for widespread quantification of FMR [@Webster1989], the metabolic scaling coefficient of FMR tends to be higher than that of SMR [~0.8; @Nagy2005].
-While the metabolic scaling coefficient of MMR in fishes ranges around a similar value, but the FMR scaling coefficient remains poorly documented [@Norin2016]. 
+On average, free-living fishes in their natural habitats will only exploit a given proportion of their aerobic scope [@Norin2016]. Thus, the factorial scope for activity (FSA), which corresponds to the ratio between the FMR and the SMR, is a better reflection of energy expenditure in the wild [@Chung2019], although internal homeostatic processes such as digestion and reproduction also incur an energetic cost. In terrestrial vertebrates, where the doubly-labeled water technique has allowed for widespread quantification of FMR [@Webster1989], the metabolic scaling coefficient of FMR tends to be higher than that of SMR [~0.8; @Nagy2005].
+While the metabolic scaling coefficient of MMR in fishes ranges around a similar value, the FMR scaling coefficient remains poorly documented [@Norin2016]. 
 
-\noindent Since FMR challenging to measure for water-breathing animals in the aquatic environment [@Treberg2016], it has only been estimated for a small number of fishes [e.g. @Lucas2011; @Murchie2011; @Cruz-Font2016; @Chung2019]. 
+\noindent Since FMR is challenging to measure for water-breathing animals in the aquatic environment [@Treberg2016], it has only been estimated for a small number of fishes [e.g. @Lucas2011; @Murchie2011; @Cruz-Font2016; @Chung2019]. 
 These estimates are largely derived from biotelemetry approaches that rely on accelerometry tags and heart rate measurements calibrated with rates of oxygen uptake in the laboratory [@Treberg2016; @Grans2009]. 
 A major limitation of biotelemetry is that their application is limited to large individuals [@Grans2009]. 
-More recently, FMR has been estimated from the isotopic composition of carbon in fish otoliths [@Chung2019]. However, this approach relies on destructive sampling and the generality of the undoubtedly promising results are yet to be validated across a broad range of species. Thus, alternative pathways to determining fish FMR may improve our capacity to understand fishes and their contributions to ecosystem functioning.
+More recently, FMR has been estimated from the isotopic composition of carbon in fish otoliths [@Chung2019]. However, this approach relies on destructive sampling and the generality of the undoubtedly promising results are yet to be applied across a broad range of species. Thus, non-invasive methods to estimate FMR on many co-occurring fish species are needed to better understand the contributions of fishes to ecosystem functioning.
 
-\noindent Here, we propose a new approach to estimate FMR and FSA in fishes, which relies on the assumption that FMR lies between SMR and MMR. Specifically, we measured SMR and MMR using traditional respirometry techniques in the laboratory, and then quantified in situ swimming speeds of seven reef fish species using underwater stereo-video systems to derive FMR and FSA on the basis of known relationships between metabolic rate and swimming speed, which allowed us to compare the metabolic scaling coefficients of SMR, MMR, and FMR for all seven species. By combining our results with underwater visual census data of fish size and abundance on reefs around Mo'orea, French Polynesia, we also quantified assemblage-level SMR and FMR. In doing so, we demonstrate the viability and applicability of our approach to tackle questions across fields of organismal, community, and ecosystem ecology in the marine biome. 
+\noindent Here, we propose a new approach to estimate FMR and FSA in fishes, which relies on the fact that FMR lies between SMR and MMR. Specifically, we measured SMR and MMR using traditional respirometry techniques in the laboratory, and then quantified *in situ* swimming speeds of reef fish species using underwater stereo-video systems. This permitted us to derive FMR and FSA on the basis of known relationships between metabolic rate and swimming speed, and to assess the scaling coefficients of FMR with body mass. By combining our results with underwater visual census data of fish size and abundance on reefs around Mo'orea, French Polynesia, we also quantified assemblage-level SMR and FMR. In doing so, we demonstrate the viability and applicability of our approach to tackle questions across fields of organismal, community, and ecosystem ecology in the marine biome. 
 
 ## Methods
 
 \noindent Our approach is based on the relationship between swimming speed and metabolic rate [@Binning2013; @Norin2016;  @Torres1983]. 
-Specifically, we rely on the assumption that the standard metabolic rate (SMR) represents the metabolic rate of an individual when its swimming speed is zero ($U_0$), while the maximum metabolic rate (MMR) represents the oxygen consumption rate of individuals at their maximum – or critical – swimming speed ($U_{crit}$)(Figure 1). 
-Further, we assume that metabolic rates variy predictably with swimming speed following a traditional power function [@Brett1964; @Korsmeyer2002]. 
+Specifically, we rely on the notion that the standard metabolic rate (SMR) represents the metabolic rate of an individual when its swimming speed is zero ($U_0$), while the maximum metabolic rate (MMR) represents the oxygen consumption rate of individuals at their maximum – or critical – swimming speed ($U_{crit}$)(Figure 1). 
+Further, we assume that metabolic rates vary predictably with swimming speed following a traditional power function [@Brett1964; @Korsmeyer2002]. 
 Therefore, on the basis of knowledge of SMR and MMR along with the $U_0$ and $U_{crit}$ of individuals, the field metabolic rate (FMR) of a species can be estimated if the average swimming speed ($U$) of individuals for a specific body size is known. 
-We measured SMR and MMR using respirometry techniques, obtained $U_{crit}$ through empirical data available in the literature, and estimated $U$ using stereo-camera video recordings in the field. 
-We then used these estimates of FMR to quantify the Factorial Scope of Activity (FSA), and the metabolic scaling coefficient of FMR.
-Finally, in order to evaluate the impact of assessing assemblage-level oxygen consumption on the basis of FMR instead of SMR, we scaled up our estimates at assemblage level according to visual census data of fish sizes and abundances in Mo’orea (French Polynesia).    
+We measured SMR and MMR using respirometry techniques in the laboratory, obtained $U_{crit}$ through empirical data available in the literature, and estimated $U$ using stereo-camera video recordings in the field. 
+We then used these estimates of FMR to quantify the factorial scope for activity (FSA), and the metabolic scaling coefficient of FMR.
+Finally, to evaluate the impact of assessing assemblage-level metabolic rates on the basis of FMR instead of SMR, we scaled up our estimates at assemblage level according to visual census data of fish sizes and abundances on a coral reef in Mo’orea, French Polynesia.    
 
-**FIGURE1**
+![](figures/figure1.pdf)
+
 Figure 1. Definition of terms used to describe aspects of fish metabolism and their inter-relationships. SMR is standard metabolic rate calculated as the oxygen uptake rate ($\dot{M}O_{2}$ at swimming speed 0 ($U_0$). FMR is field metabolic rate measured as $\dot{M}O_{2}$ at spontaneous swimming speed ($U$). MMR is maximum metabolic rate, which can be measured as the $\dot{M}O_{2}$ at maximum (critical) swimming speed ($U_{crit}$).
 
 
 ### Model species
 
-\noindent In our assessment, we focused on seven reef fish species with varying body sizes and shapes, trophic strategies, and behavioral patterns: *Cephalopholis argus* (family Serranidae), a large, fusiform, sedentary piscivore; *Chaetodon ornatissimus* (family Chaetodontidae), a small-bodied, laterally compressed, obligate coral feeder; *Chromis iomelas* (family Pomacentridae), a small, schooling planktivore; *Ctenochaetus striatus* (family Acanthuridae), a medium-sized, grazing detrivore; *Naso lituratus* (family Acanthuridae), a large-bodied, grazing herbivore feeding on macroalgae; *Odonus niger* (family Ballistidae), a large-bodied schooling planktivore; and *Zebrasoma scopas* (family Acanthuridae), a compressed, small-bodied, grazing herbivore feeding on filamentous algae. 
-All data were collected in Mo’orea, French Polynesia, between March 2018 and November 2018. 
+\noindent We focused on seven common reef fish species with varying body sizes and shapes, trophic strategies, and behavioral patterns: *Cephalopholis argus* (family Serranidae), a large, fusiform, sedentary piscivore; *Chaetodon ornatissimus* (family Chaetodontidae), a small-bodied, laterally compressed, obligate coral feeder; *Chromis iomelas* (family Pomacentridae), a small, schooling planktivore; *Ctenochaetus striatus* (family Acanthuridae), a medium-sized, grazing detrivore; *Naso lituratus* (family Acanthuridae), a large-bodied, grazing herbivore feeding on macroalgae; *Odonus niger* (family Ballistidae), a large-bodied schooling planktivore; and *Zebrasoma scopas* (family Acanthuridae), a compressed, small-bodied, grazing herbivore feeding on filamentous algae. 
+All data were collected in Mo’orea, French Polynesia, between March 2018 and February 2019. 
 For respirometry experiments, individuals were collected in the lagoon (depth range 1-6m) next to Opunohu Bay (17.4928°S, 149.8555°W) with hand nets and clove oil.
 
 ### Standard and maximum metabolic rate
 
-\noindent To quantify SMR and MMR, we conducted intermittent-closed respirometry experiments at 28°C [@Steffensen1989; @Clark2013] on a total of 68 individuals across the seven study species. 
+\noindent To quantify SMR and MMR, we conducted intermittent-closed respirometry experiments at 28°C (+/-0.5) [@Steffensen1989; @Clark2013] on a total of 68 individuals across the seven study species with the sample size per species ranging between 4 and 23 individuals. 
 After an acclimatization and fasting period of 48 h in aquaria, the fish were individually transferred to a water-filled tub at 28°C and sequentially chased by the experimenter until visibly exhausted [@Norin2011; @Clark2012]. 
 Once the chasing was concluded, each individual was immediately placed in a respirometry chamber submersed in an ambient and temperature-controlled tank, where they were left for approximately 24 h. 
 The intermittent respirometry cycles consisted of a measurement (closed) period followed by an open period during which the respirometry chambers were flushed with fully aerated water from the ambient tank. 
-Based on previous work [@Norin2016], we considered oxygen consumption during the first closed cycle (directly after transferring the fish) to be reflective of the individual’s MMR (at complete exhaustion).
-Depending on fish size, respirometry chambers ranged in volume (including tubes and pumps) from 0.4 to 1.2 L, and measurement and flush periods lasted between 2 to 9 min and 3 to 5 min, respectively.
-SMR was calculated as the average of the 10 % lowest $\dot{M}O_{2}$ values measured during the entire period, after the removal of outliers, while MMR was calculated from the slope of the first measurement period [@Chabot2016].
+Based on previous work [@Norin2016], we considered oxygen consumption during the first closed cycle (directly after transferring the fish) to be reflective of the individual’s MMR.
+Depending on fish size, respirometry chambers ranged in volume (including tubes and pumps) from 0.38 to 4.4 L, and measurement and flush periods lasted between 2 to 9 min and 3 to 5 min, respectively.
+SMR was calculated as the average of the 10 % lowest $\dot{M}O_{2}$ values measured during the entire respirometry trial, after the removal of outliers, while MMR was calculated from the slope of the first measurement period [@Chabot2016].
 
 ### Swimming speed
 
-\noindent We used two underwater stereo-video systems that were placed on the seafloor to record fish movements. Each video system consisted of two small action cameras (GoPro Hero6 Black), mounted 90 cm from each other at an angle of approximately 6°. This method allows three-dimensional (3D) measurements [@Butail2012; @Hughes1996]. 
+\noindent We used two underwater stereo-video systems that were placed on the seafloor to record fish movements. Each video system consisted of two small action cameras (GoPro Hero5 Black), mounted 90 cm from each other at an angle of approximately 6°. This method allows three-dimensional (3D) measurements [@Butail2012; @Hughes1996]. 
 To analyze the recorded videos, we used VidSync, an open-source Mac application providing accurate 3D measurements [@Neuswanger2016], which allow for the synchronization, calibration, and analysis of videos.
-We recorded calibration videos to correct for the nonlinear optical distortion of the images due to camera lenses and underwater housings, and to define the 3D coordinate system (x, y, z) used throughout the analyses, to calculate the fishes’ positions in space. 
+We recorded calibration videos to correct for the nonlinear optical distortion of the images due to camera lenses and underwater housings, and to define the 3D coordinate system (x, y, z) used throughout the analyses. 
 Errors in length measurements through video analysis increase with distance from the cameras [@Neuswanger2016]. 
 Thus, for each underwater stereo-video system, we fitted a linear regression model describing the error in measurements as a function of their distance from the nearest camera, which we used to adjust all measurements of distances and fish lengths (Figure S1). 
-We recorded twenty stationary stereo-videos between November 19th 2018 and December 2018 12th. Videos were recorded at 12 to 14 m depth on the reef slope at the Tiahura long-term monitoring site in Mo’orea (17 ° 29 ' 00.6 " S, 149 ° 54 ' 20.9 " W) and at five different time-periods: 5:00–7:00, 8:00–10:00, 11:00–13:00, 14:00–16:00, and 17:00–18:00. Each recording lasted for ~1-1.5 h. 
-We then took measurements during three 10 min sequences with intervals of 10 min starting at the end of an acclimatization period of 2 min to account for the presence of divers. 
+We recorded twenty stationary stereo-videos between November 19^th^ 2018 and December 2018 12^th^. Videos were recorded at 12 to 14 m depth on the reef slope at the Tiahura long-term monitoring site in Mo’orea (17° 29' 00.6" S, 149° 54' 20.9" W) and at five different time-periods: 5:00–7:00, 8:00–10:00, 11:00–13:00, 14:00–16:00, and 17:00–18:00. Each recording lasted for ~1-1.5 h. 
+We then took measurements during three 10 min sequences with intervals of 10 min that excluded the first 2 min to account for the presence of divers. 
 We took measurements for all fishes visible in both cameras for 3 to 5 s during the three 10 min sequences. 
 For each individual, fork length was measured three times from the videos as the straight-line distance between the fish’s head and its tail fork, and three to five consecutive swimming speeds were measured as the distance the fish moved over 3 to 5 s. 
-Final fish lengths and swimming speeds were then calculated as the mean of the repeated measurements. In total, we recorded lengths and speeds for 634 individuals.
+Final fish lengths and swimming speeds were then calculated as the mean of the repeated measurements. In total, we recorded lengths and speeds for 634 individuals, with sample sizes per species ranging between 64 and 264 individuals.
 
 ### Maximum swimming speed
 
-\noindent We extracted maximum swimming speeds ($U_{crit}$) from @Fulton2007. $U_{crit}$ was defined by @Brett1964] as the swimming speed at which a fish becomes exhausted and stops swimming when it is exposed to regular incremental changes in speed in an experimental flume. In these experimental conditions, $\dot{M}O_{2}$ measured at $U_{crit}$ corresponds to the MMR [@Norin2016]. In @Fulton2007, $U_{crit}$ of 192 individuals of five families and their corresponding lengths were measured, and these measurements were then used in the present study to relate maximum swimming speed with body size and aspect ratio of the tail, as a proxy for variations in  swimming ability (retrieved from Fishbase; @Froese2014). We also included random effects of the interaction between family and body shape on the intercept and slope of body size.
+\noindent We extracted maximum swimming speeds ($U_{crit}$) from previous work [@Fulton2007]. $U_{crit}$ is defined as the swimming speed at which a fish becomes exhausted and stops swimming when it is exposed to regular incremental changes in speed in an experimental flume [@Brett1964]. In these experimental conditions, $\dot{M}O_{2}$ measured at $U_{crit}$ corresponds to MMR [@Norin2016]. In the original work of Fulton et al. [@Fulton2007], $U_{crit}$ of 192 individuals of five families and their corresponding lengths were measured, and these measurements were then used in the present study to relate maximum swimming speed with body size and aspect ratio of the tail, as a proxy for variations in  swimming ability (retrieved from Fishbase; @Froese2014). 
 
 ### Data analysis
 
 \noindent We quantified FMR and factorial scope for activity (FSA) by combining multiple regression models, that describe the relationships between SMR and MMR with body mass, swimming speed ($U$), and maximum swimming speed [$U_{crit}$; from @Fulton2007] with body size. 
-First, we used the respirometry data to fit a relationship between either SMR or MMR and body mass using a Bayesian hierarchical model, while taking into account the co-variation between MMR and SMR measurements.
-We define the $log_{10}$ transformation of SMR and MMR to be normally distributed with a mean ($\mu$) and a standard deviation ($\sigma$) as follows: 
+First, we used the respirometry data to fit a relationship between either SMR or MMR and body mass using a Bayesian hierarchical model, while accounting for the co-variation between MMR and SMR.
+We define the $log_{10}$ of SMR and MMR to be normally distributed with a mean ($\mu$) and a standard deviation ($\sigma$) as follows: 
 
 $${{\textrm{log}}_{10}{(\textrm{MR}_{i})}} \sim {\textrm{Normal}(\mu_{i}, \sigma)},$$
 $$\mu_{i} = (a + a_{j,k}) + (b + b_{j,k}){\textrm{log}_{10}(\textrm{weight}_i)}, $$
 
-\noindent where $i$ is the individual, $j$ is the species, $k$ is the type of metabolic rate (SMR or MMR),  $a$ is the global intercept of the regression; $a_{j,k}$ is the effect on the intercept for each species and type of metabolic rate, $b$ is the global slope of $log_{10}(weight)$,  $b_{j,k}$ is the effect on the slope of for each species and type of metabolic rate. 
-We obtained the mean intercept and slope per species by summing global- and species-level parameters. We used an informative normal prior for the global slope coefficient (i.e. scaling coefficient) with average 0.75 and 0.1 as the standard deviation [@West1997]. For all other parameters, we used uninformative priors as defined by @Burkner2017.
+\noindent where $i$ is the individual, $j$ is the species, $k$ is the type of metabolic rate (SMR or MMR),  $a$ is the global intercept of the regression; $a_{j,k}$ is the effect on the intercept for each species and type of metabolic rate, $b$ is the global slope of $log_{10}(weight)$,  $b_{j,k}$ is the effect on the slope for each species and type of metabolic rate. 
+We obtained the mean intercept and slope per species by summing global- and species-level parameters. We used an informative normal prior for the global slope coefficient (i.e. scaling coefficient) with average 0.75 and 0.1 as the standard deviation [@West1997]. For all other parameters, we used weakly informative priors [@Burkner2017].
    
-Second, using the data retrieved from the video analyses, we fitted a hierarchical Bayesian regression model for estimating fish swimming speed as a function of body length. We defined the $log_{10}$ transformation of swimming speed to be student-t distributed with degrees of freedom ($\nu$), mean ($\mu$), and a standard deviation ($\sigma$).The student’s t-distribution was applied to build a robust regression, as the nature of our data includes outliers [@Motulsky2006].
+Second, using the data retrieved from the video analyses, we fitted a hierarchical Bayesian regression model for estimating fish swimming speed as a function of body length. We defined the $log_{10}$ transformation of swimming speed to be student-t distributed with degrees of freedom ($\nu$), mean ($\mu$), and a standard deviation ($\sigma$).The student’s t-distribution was applied to build a robust regression, as our data includes outliers [@Motulsky2006].
 
 $$\textrm{log}_{10}(\textrm{speed}_{i}) \sim \textrm{Student}(\nu, \mu_{i}, \sigma),$$
 $$\mu_{i} = (a + a_{j}) + (b + b_{j})\textrm{log}_{10}(\textrm{length}_i),$$
 
-\noindent where $i$ is the individual, $j$ is the species, $a$ is the global intercept of the regression, $a_j$ is the effect on the intercept for each species, $b$ is the global slope , $b_j$ is the effect on the slope of for each species. For each species, their corresponding regression coefficients were estimated by summing two effects of the model: the global parameter and the species-specific effect on the global parameter. 
+\noindent where $i$ is the individual, $j$ is the species, $a$ is the global intercept of the regression, $a_j$ is the effect on the intercept for each species, $b$ is the global slope , $b_j$ is the effect on the slope of for each species. For each species, regression coefficients were estimated by summing two effects of the model: the global parameter and the species-specific effect on the global parameter. 
       
-Thirdly, we fitted a similar model to predict maximum swimming speed in function of body length on the family level using data extracted from Fulton et al. (2007): 
+Thirdly, we fitted a similar model to predict maximum swimming speed in function of body length and aspect ratio using data extracted from Fulton et al. [@Fulton2007], including random effects of the interaction between family and body shape on the intercept and slope of body size.: 
 
 $$log_{10}(maxspeed_{i}) \sim Student(\nu, \mu_{i}, \sigma),$$
-$$\mu_{i} = (a + a_{j}) + (b + b_{j})log_{10}(length_i),$$
+$$\mu_{i} = (a + a_{j}) + (b + b_{j})log_{10}(length_i) + AR,$$
 
-\noindent where $i$ ,$j$ is the interaction of family and body shape, $a$ is the global intercept of the regression, $a_j$ is the effect on the intercept for each family and body shape, $b$ is the global slope of , $b_j$ is the effect on the slope of for each family and body shape. 
-Here, we also applied the student’s t-distribution and used general uninformative priors. We then used this model to estimate the maximum swimming speed of the species included in our study. 
+\noindent where $i$ ,$j$ is the interaction of family and body shape, $a$ is the global intercept of the regression, $a_j$ is the effect on the intercept for each family and body shape, $b$ is the global slope , $b_j$ is the effect on the slope for each family and body shape, and $AR$ is the aspect ratio of the tail. 
+Here, we also applied the Student’s t-distribution and used general uninformative priors. We then used this model to estimate the maximum swimming speed of the species included in our study. Aspect ratio's were extracted from fishbase [@Froese2014]. 
 
-### Factorial aerobic scope, field metabolic rate and factorial scope for activity calculations 
+### Factorial aerobic scope, field metabolic rate, and factorial scope for activity calculations 
 
-\noindent We predicted the Factorial Aerobic Scope (FAS), field metabolic rate (FMR), and Factorial Scope for Activity (FSA) for the full size range of all model species (per cm). 
+\noindent We predicted the factorial aerobic scope (FAS), field metabolic rate (FMR), and factorial scope for activity (FSA) for the full size range of all model species (per cm). 
 To estimate the fish’s FAS at each possible length, we first predicted their SMR and MMR by calculating their weight using published length-weight relationship accessed through FishBase [@Froese2014], and making predictions based on our model parameters. 
 For each iteration of the prediction, FAS was calculated as $FAS = \frac{MMR}{SMR}$  [@Fry1947; @Killen2016]. 
 Finally, we summarized the FAS for each species at all sizes by taking means, standard deviations, and 95% credible intervals. 
 
-\noindent FSA is obtained by dividing the fish’s FMR ($\dot{M}O_{2}$ at average speed $U$) by their SMR. To describe the relationship between $\dot{M}O_{2}$ and swimming speed ($U$), Brett (1964) used the traditional power function: $\dot{M}O_{2} = a10^{bU}$ . Here, we applied the $log_{10}$-transformed form (Korsmeyer et al., 2002). Consequently, the following equation was used in this study to determine individual FMR: 
+\noindent FSA is obtained by dividing the fish’s FMR ($\dot{M}O_{2}$ at average speed $U$) by their SMR. To describe the relationship between $\dot{M}O_{2}$ and swimming speed ($U$), Brett (1964) [@Brett1964] used a traditional power function: $\dot{M}O_{2} = a10^{bU}$ . Here, we applied the $log_{10}$-transformed form [@Korsmeyer2002]. Consequently, the following equation was used in this study to determine individual FMR: 
 $$log(FMR) = log(SMR) + \frac{log(MMR) - log(SMR)}{U_{crit}},$$
 
-\noindent where we consider the slope $b = \frac{log(MMR) - log(SMR)}{U_{crit}}$. Here, $U$ is predicted through our model relating length and swimming speed, $Ucrit$ is predicted for each length and species using our model for family-level maximum swimming speeds, and SMR and MMR is predicted as stated above. To include an estimate of uncertainty, we included 1000 iterations of estimates of the swimming speed $U$. For $U_{crit}$, SMR and MMR we used the median of the predicted values in this step. 
+\noindent where we consider the slope $b = \frac{log(MMR) - log(SMR)}{U_{crit}}$. Here, $U$ is predicted through our model relating length and swimming speed, $U_{crit}$ is predicted for each length and species using our model for family-level maximum swimming speeds, and SMR and MMR is predicted as stated above. To include an estimate of uncertainty, we included 1000 iterations of estimates of the swimming speed $U$. For $U_{crit}$, SMR and MMR we used the median of the predicted values in this step. 
 
-\noindent Once FMR was determined, we calculated FSA with the following equation: 
-$$FSA = \frac{12FMR + 12SMR}{24SMR}.$$
+\noindent Once we determined FMR, we calculated FSA with the following equation: 
+$$FSA = {0.5}{\frac{FMR}{SMR}} + 0.5.$$
 We repeated this for each iteration and then summarized FSA per species per size. We assumed that fish rested for 12 h (i.e. sleeping) [@Marshall1972]. 
-As such, for all studied species we assumed that they are active during the day and inactive during the night, which aligns with the information available on the studied species. 
+As such, for all studied species we assumed that they are active during the day and inactive during the night. 
 
-### Scaling up to  assemblage-level 
-\noindent In 2016, reef fish communities were monitored in 13 sites on the outer reef around Mo’orea using underwater visual census. 
-During each census a diver swam along a transect of 25m and  counted all fishes within a width of 2m. 
-All fishes were identified to the species level and their length was estimated to a precision of 1cm. 
-Each transect covered an area of 50 m², except Tiahura and Haapiti that covered an area of 100 m² each.  
-At each site, three transects were surveyed, except for Tiahura and Haapiti where 4 and 2 transects were observed respectively.    
-We extracted data for our model species from this database, which resulted in 802 individuals across the 7 species. 
-Then, for each site, we quantified the SMR and FMR for each individual using the above-mentioned methodology. 
-Finally, we calculated the total SMR and FMR of the fish assemblage composed of the seven species at each site by adding up individual estimates.
+### Assemblage-level estimates 
+\noindent In 2016, reef fish communities were monitored across 13 sites on the outer reef around Mo’orea using underwater visual censuses. 
+During each census, a single diver swam along a transect of 25 m and  counted all fishes within a width of 2 m. 
+All fishes were identified to the species level and their length was estimated to the nearest 1 cm. 
+Each transect covered an area of 50 m², except Tiahura and Haapiti, which covered an area of 100 m² each.  
+At each site, three transects were performed, except for Tiahura and Haapiti where four and two transects were performed respectively.    
+We extracted data for our model species from this database, which resulted in 802 individuals across the seven species. 
+Then, we quantified the SMR and FMR for each individual using the above-mentioned methodology. 
+Finally, we calculated the total SMR and FMR of the fish assemblage composed of the seven species at each site by summing across individual estimates.
 
 
 ## Results
 
-### Standard and maximum metabolic rate 
-\noindent The regression model predicting metabolic rates ($\textrm{log}_{10}$ SMR and MMR) as a function of body mass with varying slopes and intercepts per species had a Bayesian $R^2$ of 0.96 (Table 1; Figure 2). The average metabolic scaling coefficient across species was 0.73 for SMR and 0.78 for MMR (Table 1). The median species-specific scaling coefficients varied between 0.71 and 0.76 for SMR, and between 0.77 and 0.78 for MMR. 
+### Standard and maximum metabolic rates 
+\noindent The regression model predicting metabolic rates (log~10~ of SMR and MMR) as a function of log~10~ of body mass with varying slopes and intercepts per species had a Bayesian R^2^ of 0.96 (Table 1; Figure 2). The average metabolic scaling coefficient across species was 0.73 for SMR and 0.78 for MMR (Table 1). The median species-specific scaling coefficients varied between 0.71 and 0.76 for SMR, and between 0.77 and 0.78 for MMR. 
 
 ```{r, echo = FALSE}
 table <- drake::readd(table_mr)
@@ -192,12 +195,12 @@ flextable(table) %>%
   italic(j = "species") %>%
   fontsize(size = 8) %>%
   fontsize(size = 10, part = "header") %>%
-  set_caption("Table 1: Overview of species-specific slope coefficients of the regression of log10-transformed SMR and MMR in function of log10-transformed body mass. The intercept for each species is expressed as the back-transformed value, which is essentially the predicted metabolic rate for an individual of 1g") %>%
+  set_caption("Table 1: Overview of species-specific slope coefficients of the regression of log~10~-transformed SMR and MMR in function of log~10~-transformed body mass. The intercept for each species is expressed as the back-transformed value for an individual of 1 g") %>%
   autofit() 
 ```
 \newpage         
           
-```{r, echo = FALSE, fig.width = 10, fig.height = 6, fig.fullwidth = TRUE, fig.cap = "Figure 2. Linear regressions between log10-transformed metabolic rate (g O2 d−1) and weight (g) for the study species, predicted by model 1. Dots represent empirical measurements. Solid and dotted lines respectively represent MMR and SMR predicted mean values per species of the response distribution for model 1. Transparent areas are the 95% credible intervals of the fitted values of the regression."}
+```{r, echo = FALSE, fig.width = 10, fig.height = 6, fig.fullwidth = TRUE, fig.cap = "Figure 2. Linear regressions between log~10~-transformed metabolic rate (g O~2~ d^−1^) and body mass (g) for the study species, predicted by model 1. Symbols represent empirical measurements. Solid and dashed lines represent predicted mean standard metabolic rate (SMR) and maximum metabolic rate (MMR) values, respectively. Transparent areas are the 95% credible intervals of the fitted values of the regression."}
 
 readd(plot_mr)
 
@@ -205,23 +208,23 @@ readd(plot_mr)
 
 \newpage
 ### Swimming speed 
-\noindent  The regression model that predicts species-specific swimming speed in function of body size had a median Bayesian $R^2$ of 0.57 and its residual variance ($\sigma$) was 0.37. 
-The average slope values per species varies between 0.18 and 0.97 (Figure 3, Table S2). 
-At the individual scale, the 95% credible interval of swimming speed predictions varies between 28.5 and 32.4 cm $s^{−1}$ across all studied species and all size classes. For maximum swimming speed, our model showed an increase with body size and aspect ratio (Table S3), with a median Bayesian  of 0.46. We then used this model to estimate maximum swimming speeds of our study species (Figure 3).
+\noindent  The regression model predicting species-specific swimming speed as a function of body size had a median Bayesian R^2^ of 0.57 and its residual variance ($\sigma$) was 0.37. 
+The average species-specific slope values varied between 0.18 and 0.97 (Figure 3, Table S2). 
+At the individual scale, the 95% credible interval of swimming speed predictions varied between 28.5 and 32.4 cm s^−1^ across all species and size classes. For maximum swimming speed, our model showed an increase with body size and aspect ratio (Table S3), with a median Bayesian R^2^ of 0.46. We then used this model to estimate maximum swimming speeds (Figure 3).
             
 
-```{r, echo = FALSE, fig.width = 10, fig.height = 6, fig.fullwidth = TRUE, fig.cap = "Figure 3. Linear regressions between log10-transformed speed (cm s−1) and length (cm) for the seven studied fish species. Dots represent the raw data of individuals measured through stereovideo analysis. Solid lines and shaded areas represent the predicted mean values, and associated 95% credible interval of swimming speeds. The dotted lines represent the predicted maximum swimming speeds."}
+```{r, echo = FALSE, fig.width = 10, fig.height = 6, fig.fullwidth = TRUE, fig.cap = "Figure 3. Linear regressions between log~10~-transformed speed (cm s^−1^) and length (cm) for the seven studied fish species. Symbols represent the raw data of individuals measured through stereo-video analysis. Solid lines and shaded areas represent the predicted mean values, and associated 95% credible interval of swimming speeds. The dashed lines represent the predicted maximum swimming speeds."}
 
 readd(plot_speed)
 
 ```
 
-### Field metabolic rate, factorial aerobic scope and factorial activity scope estimations
+### Field metabolic rate, factorial aerobic scope and factorial scope for activity estimations
 \noindent  We estimated FMR, FAS, and FSA across the size range of our study species as observed in the monitoring dataset from Mo'orea in 2016. 
-Across all species and size classes, average FMR estimates ranged between 0.001 and 1.013 g O2 $d^{−1}$ at the individual level (Table S4). FAS and FSA estimates range between 2.4 and 7.0, and between 1.2 and 2.8 respectively. The scaling coefficient of FMR was higher than the SMR coefficient for all species, except *C. striatus* (Figure 4a). The scaling coefficient of FMR was considerably higher than the MMR coefficients for *N. lituratus* and *O. niger*. Thus, FSA increased with size for most species (Figure 4b). 
+Across all species and size classes, average FMR estimates ranged between 0.001 and 1.013 g O~2~ d^−1^ at the individual level (Table S4). FAS and FSA estimates range between 2.4 and 7.0, and between 1.2 and 3.2, respectively, across species and sizes. The scaling coefficient of FMR was higher than the SMR coefficient for all species, except for *C. striatus* (Figure 4a), hence, FSA increased with size for all those species (Figure 4b). The scaling coefficient of FMR was considerably higher than the MMR coefficients for *N. lituratus* and *O. niger*. 
 \newpage
 
-```{r, echo = FALSE, fig.width = 8, fig.height = 8, fig.fullwidth = TRUE, fig.cap = "Figure 4. a) Fitted slopes or scaling coefficients with body mass for SMR, MMR, and FMR. b) Predicted FSA for the seven species across their body size range."}
+```{r, echo = FALSE, fig.width = 8, fig.height = 8, fig.fullwidth = TRUE, fig.cap = "Figure 4. a) Fitted scaling coefficients for standard metabolic rate (SMR), maximum metabolic rate (MMR), and field metabolic rate (FMR) based on slopes of the log~10~-log~10~ relationships between the metabolic rates (g O~2~ d^−1^) and body mass (g). Lines represent the 95% credible interval and dots indicate the average values. b) Predicted average factorial scope for activity (FSA) for the seven reef fish species across their body size range."}
 
 readd(plot_combined)
 
@@ -230,73 +233,80 @@ readd(plot_combined)
 \newpage
 
 ### Assemblage-level predictions
-\noindent Scaling up SMR and FMR at community level shows a remarkable difference between the two estimates of oxygen consumption rate, SMR being on average about half of the estimated FMR. 
-The total SMR (± SD) of each fish community per studied site lie between 0.026 ± 0.009 and 0.325 ± 0.021 g O2 m−2 d−1 across all sites (Figure 5). Further, the total FMR (± SD) varies between 0.036 ± 0.014 g O2 m−2 d−1 and 0.465 ± 0.07 g O2 m−2 d−1. The variation in total SMR and FMR at the assemblage-level between sites is related to the abundance of the studied fish assemblages per site (see Figure S4).
+
+\noindent Scaling up SMR and FMR to an assemblage level revealed major variation in the two estimates of metabolism, with average SMR (± SD) for this assemblage of seven fish species across sites (0.026 ± 0.009 and 0.325 ± 0.021 g O~2~ m^−2^ d^−1^; Figure 5) tending to be about half total FMR (0.036 ± 0.014 g O~2~ m^−2^ d^−1^ and 0.465 ± 0.07 g O~2~ m^−2^ d^−1^). Spatial variation in total SMR and FMR reflected patterns in the relative abundance of the seven study species across sites (Figure 5, Figure S4). Afareaitu, Maatea, Motu Ahi, Taotaha, and Tetaiuo, sites where *C. argus* and *O. niger* dominated the reef fish assemblage, had a total FMR about twice as high as the total SMR. On the contrary, sites dominated by *C. striatus* (50 to 95% of the total reef fish abundance) had total FMR 1.27 to 1.41 times higher than total SMR (i.e. Nuarei, Pihaena, Temae, and Tiahura).
 \newpage
 
-**FIGURE5**
-          
-Figure 5. Yellow and blue barplots respectively present the total community oxygen consumption rates (based on the field metabolic rate and standard metabolic rates (in units of g O2 m−2 d−1) of fish assemblages at the 13 studied sites represented by white points on the map.
+```{r, echo = FALSE, fig.width = 12, fig.height = 10, fig.fullwidth = TRUE, fig.cap = "Figure 5. Field (FMR) and standard metabolic rates (SMR) of an assemblage of six reef fish species at 13 sites around Mo'orea, French Polynesia. Dashed lines represent 1.5 times the SMR as a reference. Coloured bars display the relative abundances of the reef fish species at each site"}
+
+readd(figure5)
+
+```
 
 \newpage
-\noindent  Afareaitu, Maatea, Motu Ahi, Taotaha and Tetaiuo have a total FMR about twice as high as the total SMR, and these are sites where C. argus and O. niger constitutes dominate the reef fish assemblage. On the contrary, sites dominated by C. striatus (50 to 95% of the total reef fish abundance) have a total FMR 1.27 to 1.41 times higher than the total SMR (i.e. Nuarei, Pihaena, Temae, Tiahura).
 
 ## Discussion
 
-\noindent Field metabolic rate (FMR) is an essential organismal property that mediates elemental fluxes across the tree of life, thus influencing system-wide movements of energy and nutrients.
-Yet, particularly for marine fishes, FMR is difficult to obtain and rarely considered at the community level due to the lack of quantitative data on the activity of dominant fish species [@Treberg2016]. 
-Here, we couple experimental data on metabolic rates with field observations through stereo-video analysis to estimate field metabolic rates in fishes, and we exemplify our approach with a case study of seven common coral reef fish species. 
-We show that the factorial scope of activity (FSA) of reef fish species varies substantially across species and demonstrate that, for certain species, the metabolic scaling coefficient of FMR is well above the theoretical value of 0.75.
-Moreover, our results highlight the potential pitfalls of estimating the community-level metabolic rate of heterogeneous reef fish assemblages based on SMR instead of FMR. Since our study species are commonly found on coral reefs across the Indo-Pacific, and span a range of trophic levels from higher order carnivore to planktivores, corallivores and herbivore/detritivore, our results are likely to be broadly applicable to coral reef fish assemblages. 
+\noindent Field metabolic rate (FMR) is an essential organismal property that mediates elemental fluxes across the food web, thus influencing system-wide movements of energy and nutrients.
+By coupling experimental data on metabolic rates with field observations through stereo-video analysis, we demonstrate that the factorial scope of activity (FSA) of reef fish species varies substantially across species and that, the metabolic scaling coefficient of FMR can substantially exceed the theoretical value of 0.75.
+Moreover, our results highlight the potential pitfalls of estimating the community-level metabolic rate of heterogeneous reef fish assemblages based on SMR instead of FMR. 
 We suggest that the coupling of physiological traits with stereo-video analyses provides an excellent opportunity to estimate field metabolic rates of fishes in marine environments that allow for visual assessments.   
 
-\noindent The metabolic rates of our study species varied predictably with body mass, in accordance with the metabolic theory of ecology [@Brown2004], with the average slope value of our model approximating the allometric exponent of 0.75 predicted by @West1997. 
-Furthermore, our FSA is consistent with previous estimates for small fresh-water fish, in which the FMR was obtained through a combination of bioenergetic modeling and behavioral observations and was on average 1.9 times higher than SMR [@Trudel1996]. 
-However, for several other fish species FMR estimates were up to five times higher than SMR estimates, and in tuna, the difference was as high as nine-fold [@Brill1991; @Chabot2016].
+\noindent The metabolic rates of our study species varied predictably with body mass, in accordance with the metabolic theory of ecology [@Brown2004], with the average slope value approximating the allometric scaling coefficient of 0.75 predicted by West et al. [@West1997]. 
+Furthermore, our calculations of FSA were consistent with previous estimates for a small fresh-water fish, in which the FMR was obtained through a combination of bioenergetic modeling and behavioral observations [~1.9; @Trudel1996]. 
+In contrast, several other fish species may have a much higher FMR as locomotion has been reported to increase metabolic rate up to five-fold, and up to nine-fold in tuna (*Thunnus albacares*)[@Brill1991; @Chabot2016]. However, it is still challenging to quantify where FMR rests for these active species.
 
 \noindent These contrasting estimates may relate to the swimming speed and the aerobic capacity of the studied species [@Clark2013]. 
-In our case study, the two fishes with the highest FSA were *O. niger* and *C. argus*, which appear to exploit approximately one third of their aerobic capacity in their natural environment. On the other hand, fishes with a lower FSA (i.e. *C. iomelas*, *C. ornatissimus*, *C. striatus*, and *Z. scopas*) are more active, relative to their maximum swimming capacities. 
-Therefore, their FSA is closer to their FAS. 
+In our case study, the two fishes with the highest FSA were *O. niger* and *C. argus*, which appear to exploit about 45% and 60% of their aerobic scope in their natural environment, respectively. Therefore, *C. argus* has a high FSA mostly due to its high aerobic scope, while *O. niger* has the highest FSA in our case study because both because of a high aerobic capacity and because it uses a larger proportion of it for swimming. On the other hand, fishes with a lower FSA (i.e. *C. iomelas*, *C. ornatissimus*, *C. striatus*, and *Z. scopas*) were quite active, relative to their maximum swimming capacities, and exploited more than 50% of their aerobic scope. However, because their aerobic scope is low, so is their FSA.
 
-\noindent This corrobates the notion that field metabolic rate in fishes is strongly influenced by ecological traits, such as size, trophic level and habitat use [@Brown2004; @Killen2016; @Nash2015]. 
-Small fishes tend to have a lower aerobic capacity than bigger species [@Brown2004]. 
-Further, larger sizes in fishes permit the establishment of larger home ranges [@Nash2015]. 
-Furthermore, predators often have a higher metabolic capacity, compared to herbivores (e.g., *C. argus* vs. *Z. scopas*), and pelagic fishes often have higher metabolic potential than benthic fishes (e.g., *O. niger* vs. *C. striatus*), as they have high locomotory demands because of their mobility in a 3D environment [@Killen2016; @Nash2015].
+\noindent These results corroborate the notion that FMR in fishes is strongly influenced by ecological traits, such as size, trophic level and habitat use [@Brown2004; @Killen2016; @Nash2015]. 
+Larger fishes tend to have a higher aerobic capacity than smaller species [@Brown2004], and larger sizes in fishes permit the establishment of larger home ranges [@Nash2015]. 
+Furthermore, predators often have a higher metabolic capacity, compared to herbivores, and pelagic fishes often have higher metabolic potential than benthic fishes, as they have high locomotory demands because of their mobility in a 3D environment [@Killen2016; @Nash2015]. 
+Pairwise comparisons among our study species (e.g. the herbivorous *Z. scopas* vs. the carnivorous *C. argus* or the strictly benthic *C. striatus* vs. the epipelagic *O. niger*) strongly support an ecological basis for metabolic differentiation.
 
 \noindent Beyond interspecific differences, our results suggest that FMRs scale differently with body mass compared to SMRs.
-Except for *C. striatus*, all species had a scaling coefficient for FMR, considerably higher than 0.75. Consequently, the FSA is positively correlated with body size. 
-Thus, large individuals of a species may consume more oxygen in their natural environment than previously assumed. 
+Except for *C. striatus*, all species had a scaling coefficient for FMR, that considerably exceeded 0.75. Consequently, the FSA was positively correlated with body size, suggesting that large individuals of a species consume more oxygen in their natural environment than previously assumed. 
 Importantly, there is a higher interspecific variability of the scaling coefficient of FMR compared to SMR and MMR. 
 For some species, such as *C. argus*, the scaling coefficient of FMR is similar to the scaling coefficient of SMR. 
 However, for other species such as *N. lituratus* and *O. niger*, the scaling coefficient of FMR is much higher. 
 As such, community-level metabolic rates should vary predictively with both community composition and intraspecific size structure [@Barneche2014; @Allen2005)].
 Failing to account for this variation may lead to severe underestimates of the contribution of large mobile fishes to the total respiration of fish communities. 
 
-\noindent Indeed, our assemblage-level estimates indicate that total estimated metabolism of reef fish communities can increase up to two-fold compared to the total SMR to its corresponding total FMR [@Chung2019; @Clark2013]. 
-However, the ratio between community-level FMR and SMR is extremely variable, thus suggesting that universal corrections to convert SMR into FMR are not an option. 
+\noindent Indeed, our assemblage-level estimates indicate that total estimated metabolism of reef fish communities based on FMR can double estimates obtained from SMR extrapolations [@Chung2019; @Clark2013]. 
+However, the ratio between community-level FMR and SMR is extremely variable, thus suggesting that universal corrections to convert laboratory-estimated SMR into FMR are likely unreliable. 
 
-\noindent While our approach offers a novel way to estimate the activity rate of fishes, some limitations have to be considered. First, we used family-level maximum swimming speeds to reconstruct the relationship between metabolic rate and swimming speed [@Fulton2007]. 
-Even though we did account for variation in body shapes, this may introduce some bias into the calculations, as species within a family and body shape can differ substantially.
+\noindent While our approach offers a novel way to estimate the activity rate and metabolism of fishes, it comes with some limitations. First, we used family-level maximum swimming speeds to reconstruct the relationship between metabolic rate and swimming speed [@Fulton2007]. 
+Although we accounted for variation in body shapes, this may introduce some bias into the calculations, as species within a family and body shape can differ substantially.
 Furthermore, our method relies on the assumption that metabolic rate varies predictively with swimming speed following a traditional power function [@Brett1964; @Korsmeyer2002]. Ideally, this relationship should be verified empirically by measuring swimming speed and respiration rate simultaneously in the laboratory. 
 Finally, we quantified FSA assuming that fishes’ spontaneous swimming activity follows strict circadian cycles, with all activity occurring diurnally.
 However, activity patterns of reef fishes are often flexible [@Zhdanova2006]. 
-While, in principle, all our studied families are diurnally active, some species, for example in the Serranidae can be nocturnally active [@Mourier2016]. 
-Thus, our assumption can cause potential underestimates of FSA in *C. argus*.
-Currently, stereo-video recordings are unable to quantify fish swimming speeds at night, as measurements are inaccurate and imprecise with the darkness and bad visibility [@Neuswanger2016]. 
-However, infrared lighting in stereo-video recordings could provide a solution to observe nocturnal behaviour and movement in fishes [@Bassett2011].
+While, in principle, all our studied families are diurnally active, some species, (e.g. Serranidae) can be nocturnally active [@Mourier2016]. 
+Thus, our assumption can cause potential underestimates of FSA in *C. argus* and other species with more flexible circadian activity patterns.
+Currently, stereo-video recordings are unable to quantify fish swimming speeds at night, as measurements are inaccurate and imprecise in darkness and bad visibility [@Neuswanger2016]. 
+However, infrared lighting in stereo-video recordings could provide a solution to observe nocturnal behavior and movement in fishes [@Bassett2011].
 
-\noindent Despite these limitations, our proposed method may increase our knowledge of field metabolic rates in fishes and improve community level estimates of elemental fluxes. So far, the quantification of FMR is limited to laboratory techniques that are reliant on destructives sampling, or restricted to species that are big enough to be tagged with biotelemetry equipment [@Chung2019; @Treberg2016; @Brodie2016]. 
-When combined with respirometry trials, stereo-video offers a nondestructive alternative to these techniques that can be applied to all species that can be reliably observed using in situ cameras. 
-While the post-hoc treatment of the stereovideo outputs demands significant time and effort, the development of open source software to automatize data collection from video will greatly strengthen our precise and non-destructive approach to quantifying reef fish FMR [@Bassett2011; @Guenard2008].
+\noindent Despite these limitations, our proposed method increases our awareness of the variation in FMR among reef fishes which is necessary to understand ecosystem-level estimates of elemental fluxes. So far, the quantification of FMR is limited to laboratory techniques that are reliant on destructive sampling [analysis of trace elements in otoliths; @Chung2019], or restricted to species that are big enough to be tagged with biotelemetry equipment [@Treberg2016; @Brodie2016]. 
+When combined with respirometry trials, stereo-video offers a nondestructive alternative to these techniques that can be applied to all species that can be reliably observed using *in situ* cameras. 
+While the post-hoc treatment of the stereo-video outputs demands significant time and effort, the development of open source software to automatize data collection from video will greatly strengthen our precise and non-destructive approach to quantifying reef fish FMR [@Bassett2011; @Guenard2008].
 
-\noindent Anthropogenic stressors such as overfishing and climate change are affecting fish communities across the globe, increasing the concern that impoverished fish communities may not be able to sustain ecosystem functioning and provide the ecosystem services that are indispensable for human well-being. 
-To monitor and compare the functioning of ecosystems, it is essential to quantify key ecosystem processes such as nutrient cycling, herbivory, predation, growth and others [@Brandl2019front]. 
-Indidvidual metabolic rate is an essential component to accurately estimate all of these processes. 
-Our work represents an attempt to move towards a higher accuracy in the estimation of the physiological needs of fishes in their natural environment. 
+## Acknowledgements
+We thank the staff at CRIOBE, Moorea for field support. 
+   
+## Funding
+This work was supported by the BNP Paribas Foundation as a part of the ReefServices project and the Agence National de la Recherche (REEFLUX, ANR-17-CE32-0006). TN was supported by funding from the Danish Council for Independent Research (DFF-4181-00297) and the European Union’s Horizon 2020 research and innovation programme under the Marie Skłodowska-Curie grant agreement No. 713683.
+
+## Author contributions
+NMDS conceived the idea and FC, NMDS, and VP designed methodology; BF and NMDS recorded *in situ* stereo-videos; FC performed video analysis; AM and NMDS collected fishes and AM performed respirometry experiments; CJF collected data on maximum swimming speed; FC and NMDS analysed the data and led the writing of the manuscript. All authors contributed significantly to the drafts and approved the final version for publication.
+
 
 ## Supporting information
 
-Figure S1. Linear regressions between the error (cm) in measurements collected by video analysis and the distance (cm) from the nearest camera for both underwater stereo-video systems. Each colour represents an underwater stereo-camera system used in this study. Grey areas are linear regressions standard error.
+```{r, echo = FALSE, fig.width = 10, fig.height = 6, fig.fullwidth = TRUE, fig.cap = "Figure S1. Linear regressions between the error (cm) in measurements collected by video analysis and the distance (cm) from the nearest camera for both underwater stereo-video systems. Each color represents an underwater stereo-camera system used in this study. Shaded areas show the linear regression standard errors."}
+
+readd(plot_annex)
+
+```
+
 
 ```{r, echo = FALSE, warning=FALSE, message=FALSE}
 table <- drake::readd(table_speed)
@@ -304,7 +314,7 @@ flextable(table) %>%
   italic(j = "species") %>%
   fontsize(size = 8) %>%
   fontsize(size = 10, part = "header") %>%
-  set_caption("Table S2: Overview of species-secific slope and intercept coefficients of the regression of log10-transformed swimming speed in function of log10-transformed body length (in cm).") %>%
+  set_caption("Table S2: Overview of species-secific slope and intercept coefficients of the regression of natural log-transformed swimming speed in function of natural log-transformed body length (in cm). The 95% credible interval is displayed in the parantheses.") %>%
   autofit() 
 ```
 \newpage      
@@ -319,7 +329,8 @@ flextable(table) %>%
 
 ```{r, echo = FALSE, warning=FALSE, message=FALSE}
 table <- rbind(tidy(readd(mod_speedmax), par_type = "non-varying"), 
-               tidy(readd(mod_speedmax), par_type = "hierarchical"))
+               tidy(readd(mod_speedmax), par_type = "hierarchical")) %>%
+  mutate_if(is.numeric, round, 3)
 flextable(table) %>%
   fontsize(size = 8) %>%
   fontsize(size = 10, part = "header") %>%
@@ -338,11 +349,11 @@ flextable(table) %>%
   fontsize(size = 8) %>%
   fontsize(size = 8, part = "header") %>%
   italic(j = 2) %>%
-  set_caption("Table S4: Overview of average species and size-secific estimates of SMR, MMR, FMR, FAS, and FSA") %>%
+  set_caption("Table S4: Overview of average species and size-secific estimates of standard metabolic rate (SMR), maximum metabolic rate (MMR), field metabolic rate (FMR), factorial aerobic scope (FAS), and factorial scope for activity (FSA)") %>%
   autofit() 
 ```
 \newpage
-```{r, echo = FALSE, fig.width = 10, fig.height = 6, fig.fullwidth = TRUE, fig.cap = "Figure S5. Fish abundance (m-2) of the studied sites. Each colour represents the abundance of a specific studied reef fish species."}
+```{r, echo = FALSE, fig.width = 10, fig.height = 6, fig.fullwidth = TRUE, fig.cap = "Figure S5. Fish abundance (m^-2^) of the studied sites. Each colour represents the abundance of a specific studied reef fish species."}
 
 readd(plot_community_ab)
 
