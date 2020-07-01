@@ -1,35 +1,62 @@
 ---
-output: github_document
+title: Metabolic differentiation facilitates coexistence in two coral reef fish species
+author: "Simon J Brandl"
+date: "05/04/2020"
+output:
+  md_document:
+    variant: markdown_github
+    toc: true
+    toc_depth: 2
 ---
 
-<!-- README.md is generated from README.Rmd. Please edit that file -->
+# Stereo-video monitoring and physiological trials reveal metabolic demands of reef fishes in the wild
 
-```{r, include = FALSE}
-knitr::opts_chunk$set(
-  collapse = TRUE,
-  comment = "#>"
-)
+This repository contains the code and data to reproduce all tables and figures presented in Schiettekatte, Conte et al. "Stereo-video monitoring and physiological trials reveal metabolic demands of reef fishes in the wild." 
+
+
+## Instructions
+All analyses for the current project were done in R, using the drake pipeline [drake](https://github.com/ropensci/drake). You can use drake to compile all models, figures, and tables.
+To do so, first install `drake` from CRAN: 
+```{r, eval=FALSE}
+install.packages("drake")
+```
+Next you need to open an R session with working directory set to the root of the project.    
+
+We use a number of packages, listed in `r/packages.R`. If needed, missing packages should first be installed. 
+
+Then, to generate all figures, analyses, and tables, simply run:
+
+```{r, eval = FALSE}
+drake::r_make()
 ```
 
-# activity
+All output will be automatically rendered inside the folder called output. 
 
-<!-- badges: start -->
-<!-- badges: end -->
+## Details
+The elements of this project include: 
 
-The goal of activity is to ...
+1) data: this folder includes all the raw data necessary to run the script.
+2) output: this folder includes all outputs from the R-script, including figures and the manuscript in docx.
+3) text: this folder includes the raw manuscript, and cover letter.
+4) R: this folder contains three .R files, `packages.R`, `functions.R`, and `plan.R`.     
+`packages.R` contains all packages needed, `functions.R` contains all functions to reproduce the analyses, and `plan.R` provides the code that binds each step of the workflow.
 
-What is special about using `README.Rmd` instead of just `README.md`? You can include R chunks like so:
+## Datasets
 
-```{r cars}
-summary(cars)
+1. data_fulton_2007 = data from Fulton et al. (2007) containing maximum swimming speeds of fishes.
+
+2. data_respirometry = Respirometry: these data are derived from intermittent respirometry, performed in the lab at CRIOBE. Each row is an individual fish and its associated metadata. SMR = standard metabolic rate in mg O2 per h. MaxMR = maximum metabolic rate in mg O2 per h. MeanTemp...C. = temperature in ºCelsius. Weight..kg. = mass in g.
+
+3. video_swimming_speeds = Measurements of size and swimming speed of our seven model species, obtained through video analysis using the software VidSync. 
+
+4. data_uvc_moo_2016_fsp = Underwater visual census data, snapshot of a long-term monitoring program, kindly shared by CRIOBE, Moorea. 
+
+
+This paper was produced using the following software and associated packages:
+
+```{r, echo=FALSE}
+devtools::session_info()
 ```
 
-You'll still need to render `README.Rmd` regularly, to keep `README.md` up-to-date.
 
-You can also embed plots, for example:
-
-```{r pressure, echo = FALSE}
-plot(pressure)
-```
-
-In that case, don't forget to commit and push the resulting figure files, so they display on GitHub!
+All code written by Nina M. D. Schiettekatte (nina.schiettekatte@gmail.com) and Francesca Conte. Please contact me for any issue or question. 

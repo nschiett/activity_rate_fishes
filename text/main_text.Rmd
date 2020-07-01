@@ -290,7 +290,7 @@ When combined with respirometry trials, stereo-video offers a nondestructive alt
 While the post-hoc treatment of the stereo-video outputs demands significant time and effort, the development of open source software to automatize data collection from video will greatly strengthen our precise and non-destructive approach to quantifying reef fish FMR [@Bassett2011; @Guenard2008].
 
 ## Acknowledgements
-We thank the staff at CRIOBE, Moorea for field support. 
+We thank the staff at CRIOBE, Moorea for field support. Further we would like to express gratitude to Camille Gache and Yann Lacube for their help in the field. Finally, we thank CRIOBE for sharing UVC data from their long-term monitoring program.
    
 ## Funding
 This work was supported by the BNP Paribas Foundation as a part of the ReefServices project and the Agence National de la Recherche (REEFLUX, ANR-17-CE32-0006). TN was supported by funding from the Danish Council for Independent Research (DFF-4181-00297) and the European Union’s Horizon 2020 research and innovation programme under the Marie Skłodowska-Curie grant agreement No. 713683.
