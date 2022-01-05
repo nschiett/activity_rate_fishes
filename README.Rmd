@@ -1,7 +1,4 @@
 ---
-title: Metabolic differentiation facilitates coexistence in two coral reef fish species
-author: "Simon J Brandl"
-date: "05/04/2020"
 output:
   md_document:
     variant: markdown_github
@@ -59,4 +56,4 @@ devtools::session_info()
 ```
 
 
-All code written by Nina M. D. Schiettekatte (nina.schiettekatte@gmail.com) and Francesca Conte. Please contact me for any issue or question. 
+All code written by Nina M. D. Schiettekatte (nina.schiettekatte@gmail.com) and Francesca Conte. Please contact us for any issue or question. 

@@ -1,0 +1,4 @@
+term,estimate,std.error,conf.low,conf.high
+(Intercept),1.13,0.162,0.793,1.432
+log10Length_cm,0.386,0.149,0.09,0.688
+aspect_ratio,0.093,0.022,0.05,0.135

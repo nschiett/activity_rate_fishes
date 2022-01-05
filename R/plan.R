@@ -17,7 +17,7 @@ plan <- drake_plan(
   ## get tables
   table_mr = get_table_mr(mod_mr),
   table_speed = get_table_speed(mod_speed),
-  #table_speedmax = get_table_speedmax(mod_speedmax),
+  table_speedmax = get_table_speedmax(mod_speedmax),
   ## FMR calculation
   ### 1) reference dataframe
   reference = create_reference(moorea),
@@ -40,5 +40,9 @@ plan <- drake_plan(
   main_text_doc = rmarkdown::render(knitr_in("text/main_text.Rmd"), 
                                     output_format = "word_document", 
                                     output_dir = "./output/text/",
-                                    output_file = "main.docx")
+                                    output_file = "main.docx"),
+  main_text_pdf = rmarkdown::render(knitr_in("text/main_text.Rmd"), 
+                                    output_format = "pdf_document", 
+                                    output_dir = "./output/text/",
+                                    output_file = "main.pdf")
 )

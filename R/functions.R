@@ -3,14 +3,15 @@
 
 run_mod_mr <- function(respiro){
   # tall dataframe
-  respiro <- filter(respiro, !Species == "Chlorurus spirulus")
+  respiro <- filter(respiro, !Species %in% c("Chlorurus spirulus", "Chromis iomelas"))
   respiro_tall <- tidyr::gather(respiro, "MR_type", "MR_gd", SMR_gd, MMR_gd)
   # fit model
-  priors <- c(set_prior("normal(0.75,0.1)", class = "b", coef = "log10Weight_g", resp = "log10SMRgd"),
-              set_prior("normal(0.75,0.1)", class = "b", coef = "log10Weight_g", resp = "log10MMRgd"))
+  priors <- c(set_prior("normal(0.75,0.2)", class = "b", coef = "log10Weight_g", resp = "log10SMRgd"),
+              set_prior("normal(0.75,0.2)", class = "b", coef = "log10Weight_g", resp = "log10MMRgd"))
   fit <- brm(
     mvbind(log10(SMR_gd), log10(MMR_gd)) ~ 1 + log10(Weight_g) + (1|Species) + (0 + log10(Weight_g)|Species),
-             data = respiro, prior = priors, control = list(adapt_delta = 0.9))
+             data = respiro, prior = priors, control = list(adapt_delta = 0.9),
+    backend = "cmdstanr",  threads = threading(4), chains = 2, cores = 2)
 
     return(fit)
 }
@@ -39,19 +40,23 @@ get_table_mr <- function(mod_mr){
     dplyr::mutate(
        species = gsub("\\.", " ", species), 
        `SMR slope` = paste0(slope_smr_sp, " (", slope_smr_sp.lower, ";", slope_smr_sp.upper, ")"),
-       `SMR (weight = 1g)` = paste0(intercept_smr_sp, " (", intercept_smr_sp.lower, ";", intercept_smr_sp.upper, ")"),
+       `SMR (mass = 1g)` = paste0(intercept_smr_sp, " (", intercept_smr_sp.lower, ";", intercept_smr_sp.upper, ")"),
        `MMR slope` = paste0(slope_mmr_sp, " (", slope_mmr_sp.lower, ";", slope_mmr_sp.upper, ")"),
-       `MMR (weight = 1g)` = paste0(intercept_mmr_sp, " (", intercept_mmr_sp.lower, ";", intercept_mmr_sp.upper, ")")
+       `MMR (mass = 1g)` = paste0(intercept_mmr_sp, " (", intercept_mmr_sp.lower, ";", intercept_mmr_sp.upper, ")")
   ) %>%
-    select(species, `SMR slope`,`SMR (weight = 1g)`, `MMR slope`, `MMR (weight = 1g)` )
+    select(species, `SMR slope`,`SMR (mass = 1g)`, `MMR slope`, `MMR (mass = 1g)` )
 }
 
 
 #### 2) speed model ####
 
 run_mod_speed <- function(speed){
+  speed <- filter(speed, !Species %in% 
+                    c("Chlorurus spirulus", "Chromis iomelas", "Chaetodon pelewensis"))
+
   fit <- brm(log10(Speed_cms) ~ 1 + log10(Length_cm) + (log10(Length_cm) | Species),
-      data = speed, control = list(adapt_delta = 0.999, max_treedepth = 20), family = "student")
+      data = speed, control = list(adapt_delta = 0.999, max_treedepth = 20), family = "student",
+      backend = "cmdstanr",  threads = threading(4), chains = 2, cores = 2)
   return(fit)
 }
 
@@ -78,31 +83,52 @@ get_table_speed <- function(mod_speed){
 
 
 #### 3) speedmax  ####
+get_speedmax <- function(){
+  data <- read_csv("data/data_fulton_2007.csv") %>%
+    mutate(Ucrit_tls = Ucrit_cms/Length_cm) %>%
+    filter(Family %in% c("Acanthuridae", "Pomacentridae", "Serranidae", "Chaetodontidae")) %>%
+    filter(Genus %in% c("Ctenochaetus", "Naso", "Zebrasoma", "Chaetodon", 
+                        "Cephalopholis", "Chromis")) %>%
+    as.data.frame()
+  
+  speedmax <- data.frame(
+    species = c("Zebrasoma scopas", "Naso lituratus", 
+                "Ctenochaetus striatus", "Chaetodon ornatissimus",
+                "Cephalopholis argus", "Odonus niger"),
+    Ucrit_tls = c(
+      mean(data[data$Species == "Zebrasoma scopas", "Ucrit_tls"]),
+      mean(data[data$Genus == "Naso", "Ucrit_tls"]),
+      mean(data[data$Species == "Ctenochaetus striatus", "Ucrit_tls"]),
+      mean(data[data$Species == "Chaetodon lunulatus", "Ucrit_tls"]),
+      mean(data[data$Genus == "Cephalopholis", "Ucrit_tls"]),
+      6.41))
+  speedmax
+}
 
 ### wrangle speedmax
 wrangle_speedmax <- function(speedmax){
-  
+
   # check for name errors
   errors <- fishflux::name_errors(unique(speedmax$Species))
-  
+
   # corrected names using taxize
   corr <- errors %>%
-    gnr_resolve(data_source_ids = c(3, 4), 
-                with_canonical_ranks = T, 
+    gnr_resolve(data_source_ids = c(3, 4),
+                with_canonical_ranks = T,
                 highestscore = T) %>%
-    select(submitted_name, matched_name2) %>% 
+    select(submitted_name, matched_name2) %>%
     unique()
-  
-  speedmax2 <- speedmax %>% 
+
+  speedmax2 <- speedmax %>%
     # join operation:
     left_join(corr, by = c("Species" = "submitted_name")) %>%
     mutate(Species = case_when(!is.na(matched_name2) ~ matched_name2,
                                TRUE ~ Species)) %>%
     select(-matched_name2)
-  
+
   # second check errors
   fishflux::name_errors(unique(speedmax2$Species))
-  
+
   # manually replace remaining errors
   speedmax2 <- speedmax2 %>%
     mutate(Species = recode(Species,
@@ -112,17 +138,17 @@ wrangle_speedmax <- function(speedmax){
                             "Oxycheilinus digrammus" = "Oxycheilinus digramma",
                             "Scolopsis bilineatus"   = "Scolopsis bilineata"
     ))
-  
+
   body <- species(unique(speedmax2$Species), fields=c("Species","BodyShapeI"))
-  
-  # get aspect ratio's 
+
+  # get aspect ratio's
   ar <- lapply(unique(speedmax2$Species),
                function(x){
                  print(x)
                  fishflux::aspect_ratio(x)}) %>%
     bind_rows() %>%
     select(Species = species, aspect_ratio)
-  
+
   # Combine plus filter out the five families
   speedmax2 <- speedmax2 %>%
     left_join(ar) %>%
@@ -136,9 +162,10 @@ wrangle_speedmax <- function(speedmax){
 
 # run model
 run_mod_speedmax <- function(speedmax){
-  fit <- brm(log10(Ucrit_cms) ~ 1 + log10(Length_cm) + aspect_ratio + 
-               (log10(Length_cm) | Family:BodyShapeI), 
-             data = speedmax, control = list(adapt_delta = 0.95), 
+  fit <- brm(log10(Ucrit_cms) ~ 1 + log10(Length_cm) + aspect_ratio +
+               (log10(Length_cm) | Family:BodyShapeI),
+             data = speedmax, control = list(adapt_delta = 0.95),
+             backend = "cmdstanr",  threads = threading(4),
              family = "student", iter = 4000)
   return(fit)
 }
@@ -147,20 +174,26 @@ get_table_speedmax <- function(mod_speedmax){
   mod_speedmax %>%
     spread_draws(b_Intercept,
                  b_log10Length_cm,
-                 r_Family[family, type]) %>% 
-    pivot_wider(names_from = type, values_from = r_Family) %>%
+                 b_aspect_ratio,
+                 `r_Family:BodyShapeI`[family, type]) %>%
+    pivot_wider(names_from = type, values_from = `r_Family:BodyShapeI`) %>%
     dplyr::rename(int_fam = Intercept, b_fam = log10Length_cm) %>%
     dplyr::mutate(slope_fam = b_log10Length_cm + b_fam,
+                  slope_ar = b_aspect_ratio,
                   intercept_fam = b_Intercept + int_fam) %>%
-    dplyr::select(family, slope_fam, intercept_fam) %>%
+    dplyr::select(family, slope_fam, slope_ar, intercept_fam) %>%
     group_by(family) %>%
     median_hdci() %>%
     mutate_if(is.numeric, round, 2) %>%
     dplyr::mutate(
-      slope = paste0(slope_fam, " (", slope_fam.lower, ";", slope_fam.upper, ")"),
+      slope_loglength = paste0(slope_fam, " (", slope_fam.lower, ";", slope_fam.upper, ")"),
+      slope_ar = paste0(slope_ar, " (", slope_ar.lower, ";", slope_ar.upper, ")"),
       intercept = paste0(intercept_fam, " (", intercept_fam.lower, ";", intercept_fam.upper, ")")
     ) %>%
-    dplyr::select(family, slope, intercept)
+    dplyr::select(family, slope_loglength, slope_ar, intercept) %>%
+    separate(family, into = c("family", "body_shape"), sep = "_") %>%
+    mutate(body_shape = str_replace_all(body_shape, "[.]", " ")) %>%
+    mutate(body_shape = str_replace_all(body_shape, " / ", "/"))
 }
 
 ##### FMR ####
@@ -168,7 +201,8 @@ get_table_speedmax <- function(mod_speedmax){
 create_reference <- function(moorea){
   
   # min and max size found in Moorea
-  minmax <- moorea %>% filter(!species %in% c("Chaetodon pelewensis", "Chlorurus spilurus")) %>% 
+  minmax <- moorea %>% filter(!species %in% 
+                                c("Chaetodon pelewensis", "Chlorurus spilurus", "Chromis iomelas")) %>% 
     group_by(species) %>% 
     dplyr::summarize(min = min(Size), max = max(Size))
   
@@ -190,26 +224,20 @@ create_reference <- function(moorea){
   body <- species(unique(ar$species), fields=c("Species","BodyShapeI")) %>%
     select(species = Species, BodyShapeI)
   
-  
   ref <-
     lapply(1:6, function(i){
       res <- data.frame(
         species = minmax$species[i],
         Size = minmax$min[i]:minmax$max[i]
       )
-    }) %>% bind_rows() %>%   
-    # add Chromis iomelas that is not in moorea dataframe
-    rbind(data.frame(   
-      species = "Chromis iomelas",
-      Size = 2:8
-    )) %>%
+    }) %>% bind_rows()  %>%
     # add aspect ratio
     left_join(ar) %>%
     # add body
     left_join(body)
   
   fams <- data.frame(species = unique(ref$species), 
-                     Family = c("Serranidae", "Chaetodontidae", "Acanthuridae", "Acanthuridae", "Balistidae", "Acanthuridae", "Pomacentridae"))
+                     Family = c("Serranidae", "Chaetodontidae", "Acanthuridae", "Acanthuridae", "Balistidae", "Acanthuridae"))
   ref <- left_join(ref, fams)
   
   # length weight relationship 
@@ -252,7 +280,7 @@ make_plot_mr <- function(mod_mr, respiro){
     stat_lineribbon(aes(y = mmr, x = Weight_g, color = Species, fill = Species), 
                     .width = c(0), alpha = 0.8, linetype = 2)  +
     theme_bw() +
-    labs(x = "Weight (g)", y = expression(paste("Metabolic rate (g ", O[2], ".", d^{-1} ,")")),
+    labs(x = "Weight (g)", y = expression(paste("Metabolic rate (g ", O[2], d^{-1} ,")")),
          fill = "Species", color = "Species", linetype = "", shape = "") +
     scale_color_fish_d(option = "Chaetodon_ephippium") +
     scale_fill_fish_d(option = "Chaetodon_ephippium") +
@@ -261,7 +289,8 @@ make_plot_mr <- function(mod_mr, respiro){
     scale_linetype_discrete(labels = c("MMR", "SMR")) +
     scale_shape_discrete(labels = c("MMR", "SMR")) +
     theme(legend.text = element_text(face = "italic"), 
-          text = element_text( size = 14))
+          text = element_text(size = 20, color = "black"), 
+          axis.text = element_text(size = 16, color = "black"))
   #plot
   ggsave(plot, filename = "output/plots/plot_mr.png" ,width = 10, height = 6)
   
@@ -272,39 +301,42 @@ make_plot_mr <- function(mod_mr, respiro){
 
 make_plot_speed <- function(reference, mod_speed, mod_speedmax, speed){
 
-newdata <- reference %>%
-  select(Species = species, Length_cm = Size, aspect_ratio, Family, BodyShapeI)
-
-pred_speed <- fitted(mod_speed, newdata, summary = FALSE, nsamples = 1000) %>%
-  as.vector()
-
-fit_speed <- reference %>% slice(rep(1:n(), each = 1000)) %>%
-  mutate(v = exp10(pred_speed))
-
-pred_speedmax <- fitted(mod_speedmax, newdata, summary = FALSE, nsamples = 1000) %>%
-  as.vector()
-
-fit_speedmax <- reference %>% slice(rep(1:n(), each = 1000)) %>%
-  mutate(vmax = exp10(pred_speedmax)) 
+  newdata <- reference %>%
+    select(Species = species, Length_cm = Size, aspect_ratio, Family, BodyShapeI)
+  
+  pred_speed <- fitted(mod_speed, newdata, summary = FALSE, nsamples = 1000) %>%
+    as.vector()
+  
+  fit_speed <- reference %>% slice(rep(1:n(), each = 1000)) %>%
+    mutate(v = exp10(pred_speed))
+  
+  pred_speedmax <- fitted(mod_speedmax, newdata, summary = T) 
+  
+  fit_speedmax <- reference %>% 
+    mutate(vmax = exp10(pred_speedmax[,1])) 
 
 plot <-
 ggplot(fit_speed) +
   geom_point(aes(x = Length_cm, y = Speed_cms, color = Species), alpha = 0.5, size = 1,
-             data = filter(speed, ! Species %in%c("Chlorurus spilurus", "Chaetodon pelewensis"), Mode == "Swimming")) +
+             data = filter(speed, ! 
+                             Species %in%c("Chlorurus spilurus", 
+                                           "Chaetodon pelewensis",
+                                           "Chromis iomelas"), Mode == "Swimming")) +
   stat_lineribbon(aes(y = (v), x = Size, color = species, fill = species), 
                  .width = c(.8), alpha = 0.2)  +
   stat_lineribbon(aes(y = (v), x = Size, color = species, fill = species), 
                   .width = c(0), alpha = 0.8)  +
-  stat_lineribbon(aes(y = (vmax), x = Size, color = species, fill = species), 
-                  .width = c(0), alpha = 0.8, data = fit_speedmax, linetype = 2, size = 1)  +
+  geom_line(aes(y = (vmax), x = Size, color = species, fill = species), 
+                  alpha = 1, data = fit_speedmax, linetype = 2, size = 1)  +
   theme_bw() +
   labs(x = "Length (cm)", y = expression(paste("Swimming speed (cm ", s^{-1} ,")")), fill = "Species", color = "Species") +
   scale_color_fish_d(option = "Chaetodon_ephippium") +
   scale_fill_fish_d(option = "Chaetodon_ephippium") +
-  scale_x_continuous(trans = "log10") +
-  scale_y_continuous(trans = "log10") +
+ # scale_x_continuous(trans = "log10") +
+ # scale_y_continuous(trans = "log10") +
   theme(legend.text = element_text(face = "italic"), 
-        text = element_text(size = 14))
+        text = element_text(size = 20, color = "black"), 
+        axis.text = element_text(size = 16, color = "black"))
 
 ggsave(plot, filename = "output/plots/plot_speed.png", width = 10, height = 6)
 
@@ -316,19 +348,18 @@ return(plot)
 get_fmr <- function(reference, mod_speed, mod_speedmax, mod_mr){
   
   newdata <- reference %>%
-    select(Species = species, Length_cm = Size, aspect_ratio, Family, BodyShapeI)
+    select(Species = species, Length_cm = Size, aspect_ratio, Family, BodyShapeI) 
   
-  pred_speed <- fitted(mod_speed, newdata, summary = FALSE, nsamples = 4000) %>%
+  pred_speed <- fitted(mod_speed, newdata, summary = FALSE, ndraws = 1000) %>%
     as.vector()
   
-  fit_speed <- reference %>% slice(rep(1:n(), each = 4000)) %>%
+  fit_speed <- reference %>% slice(rep(1:n(), each = 1000)) %>%
     mutate(v = exp10(pred_speed))
   
   pred_speedmax <- fitted(mod_speedmax, newdata, summary = TRUE)
-  
   fit_speedmax <- reference %>% 
-    mutate(vmax = exp10(pred_speedmax[,1])) 
-  
+  mutate(vmax = exp10(pred_speedmax[,1])) 
+
   newdata <- reference %>%
     select(Species = species, Weight_g = weight)
   
@@ -338,24 +369,46 @@ get_fmr <- function(reference, mod_speed, mod_speedmax, mod_mr){
     mutate(smr = exp10(pred_mr[,1,1]), mmr = exp10(pred_mr[,1,2]))
   
   fit_speedmax$id <- 1:nrow(fit_speedmax)
-  
+
   fit <- left_join(fit_speed, fit_speedmax) %>% left_join(fit_mr) %>%
     mutate(
       b = (log10(mmr) - log10(smr))/vmax
     ) %>%
     mutate(
+      b2 = (log10(mmr) - log10(smr))/(2*vmax)
+    ) %>%
+    mutate(
+      b3 = (log10(mmr) - log10(smr))/(0.5*vmax)
+    ) %>%
+    mutate(
       FMR = exp10(log10(smr) + (b * v)) 
+    ) %>%
+    mutate(
+      FMR2 = exp10(log10(smr) + (b2 * v)) 
+    ) %>%    
+    mutate(
+      FMR3 = exp10(log10(smr) + (b3 * v)) 
     ) %>%
     mutate(
       FSA = (FMR + smr)/(2*smr)
     ) %>%
+    mutate(
+      FSA2 = (FMR2 + smr)/(2*smr)
+    ) %>%
+    mutate(
+      FSA3 = (FMR3 + smr)/(2*smr)
+    ) %>%
     group_by(Family, species, Size, weight) %>%
     dplyr::summarise(FMR_m = median(FMR),
+                     FMR2_m = median(FMR2),
+                     FMR3_m = median(FMR3),
                      logFMR_m = mean(log10(FMR)),
                      logFMR_sd = sd(log10(FMR)),
                      FMR_lb = quantile(FMR, 0.025),
                      FMR_ub = quantile(FMR, 0.975),
                      FSA_m = median(FSA),
+                     FSA2_m = median(FSA2),
+                     FSA3_m = median(FSA3),
                      FSA_lb = quantile(FSA, 0.025),
                      FSA_ub = quantile(FSA, 0.975)
     )
@@ -366,14 +419,14 @@ get_fmr <- function(reference, mod_speed, mod_speedmax, mod_mr){
     newdata <- reference %>%
       select(Species = species, Weight_g = weight)
     
-    pred_smr <- fitted(mod_mr, newdata, summary = FALSE, nsamples = 4000) %>%
+    pred_smr <- fitted(mod_mr, newdata, summary = FALSE, nsamples = 1000) %>%
       as.vector()
     
-    pred_smr <- fitted(mod_mr, newdata, summary = FALSE, nsamples = 4000)[,,1] %>% as.vector()
-    pred_mmr <- fitted(mod_mr, newdata, summary = FALSE, nsamples = 4000)[,,2] %>% as.vector()
+    pred_smr <- fitted(mod_mr, newdata, summary = FALSE, nsamples = 1000)[,,1] %>% as.vector()
+    pred_mmr <- fitted(mod_mr, newdata, summary = FALSE, nsamples = 1000)[,,2] %>% as.vector()
     
     fit_mr <- reference %>% 
-      slice(rep(1:n(), each = 4000)) %>%
+      slice(rep(1:n(), each = 1000)) %>%
       mutate(smr = exp10(pred_smr), mmr = exp10(pred_mmr))
     
     fas <- fit_mr %>%  
@@ -400,6 +453,7 @@ get_slopes <- function(field_summary, mod_mr){
   
   fit_fmr <- brm(logFMR_m|se(logFMR_sd) ~ 1 + log10(weight) 
                  + (1|species) + ( 0 + log10(weight)|species),
+                 backend = "cmdstanr",  threads = threading(4), chains = 2, cores = 2,
                  data = field_summary)
   
   summary(fit_fmr)
@@ -445,9 +499,10 @@ p_fsa <-
        fill = "Species", color = "Species", size = "Standardized length") +
   theme_bw() +
   theme(legend.text = element_text(face = "italic"), 
-        text = element_text( size = 14)) +
+        text = element_text(size = 20, color = "black"), 
+        axis.text = element_text(size = 16, color = "black")) +
   theme(legend.position = "bottom", legend.direction = "horizontal",
-        legend.text = element_text(face = "italic"),
+        legend.text = element_text(face = "italic", size = 8),
         legend.spacing = unit(3, "cm")) 
 
 ggsave( "output/plots/FSA_FAS.png", p_fsa, width = 10, height = 6)
@@ -469,13 +524,15 @@ make_plot_slopes <- function(slopes){
     geom_errorbarh(aes(xmax = ub, xmin =  lb, color = species, y = mr), 
                    height = 0, position = position_dodgev(height =  0.7), size = 1, linetype = 1) +
     scale_color_fish_d(option = "Chaetodon_ephippium") +
-    geom_vline(aes(xintercept = m, color = species), data = filter(tall, mr == "smr"), linetype = 2) +
-    scale_y_discrete(labels = c("FMR", "MMR", "SMR")) +
+    geom_vline(xintercept = 0.75, linetype = 2) +
+    scale_y_discrete(labels = c(expression(paste("AMR"[field])), "MMR", "SMR")) +
     labs(x = "Scaling coefficient", y = "", color = "") +
     theme_bw() +
-    theme(legend.text = element_text(face = "italic"),
-          text = element_text(size = 14),
-          legend.position = "bottom")
+    theme(text = element_text(size = 20, color = "black"), 
+          axis.text = element_text(size = 16, color = "black"),
+          legend.position = "bottom") +
+    theme(legend.text = element_text(face = "italic", size = 8))
+          
   
   ggsave("output/plots/scaling_sp.png", p_scale, width = 10, height = 6)
   
@@ -488,7 +545,7 @@ make_plot_combined <- function(plot_fsa, plot_slopes){
    plot_slopes + labs(tag = 'a)') + plot_fsa + labs(tag = 'b)')  + 
     plot_layout(ncol = 1,  widths = c(2, 2), heights = c(3,3))
   
-  ggsave("output/plots/combined.png", p, height = 10, width = 8)
+  ggsave("output/plots/combined.png", p, height = 12, width = 10)
   
   return(p)
 }
@@ -522,7 +579,8 @@ ggplot(com) +
                      labels = c("FMR", "SMR"), begin = 0.4, end = 1) +  
   theme_bw()+
   theme(axis.title.x=element_blank(), axis.title.y=element_blank(), 
-        text = element_text(size = 12))  +
+        text = element_text(size = 20, color = "black"), 
+        axis.text = element_text(size = 16, color = "black"))  +
   labs(fill = "")
 
 ggsave("output/plots/community_plots.png", p_com, width = 10, height = 8)
@@ -549,7 +607,9 @@ make_plot_community_ab <- function(moorea){
     scale_color_fish_d(option = "Chaetodon_ephippium") +
     theme_bw()+
     coord_flip() +
-    theme(legend.text = element_text(face="italic"), text = element_text(family = "Calibri", size = 14))
+    theme(legend.text = element_text(face="italic"), 
+          text = element_text(family = "Calibri", size = 20, color = "black"),
+          axis.text = element_text(size = 16, color = "black"))
   ggsave("output/plots/community_plot_abundance.png", plot, width = 10, height = 8)
   return(plot)
 }
@@ -569,10 +629,11 @@ siteplot <- function(site, com, moorea_s){
                data = filter(com, name == "SMR", Site_name == site), linetype = 2) +
     theme_bw() +
     theme(axis.title.x=element_blank(), 
-          text = element_text( size = 12),
+          text = element_text(size = 12),
           axis.text = element_text(color = "black"), 
           panel.grid.minor = element_blank())  +
-    labs(y = expression(paste("Metabolic rate (g ", O[2], ".", d^{-1} ,")")),
+    scale_x_discrete(labels = c(expression(paste("AMR"[field])), "SMR")) +
+    labs(y = expression(paste("Metabolic rate (g ", O[2], d^{-1} ,")")),
          title = site) 
   
   plot2 <-
@@ -698,6 +759,7 @@ make_fig5 <- function(moorea, field_summary){
   
   ggsave("output/plots/figure5.png", combined, width = 12, height = 10)
   
+  combined
 }
 
 # Get lengths of test measurements

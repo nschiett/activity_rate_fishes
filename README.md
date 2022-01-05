@@ -89,7 +89,7 @@ packages:
     ##  collate  en_GB.UTF-8                 
     ##  ctype    en_GB.UTF-8                 
     ##  tz       Europe/Paris                
-    ##  date     2020-07-01                  
+    ##  date     2020-10-21                  
     ## 
     ## ─ Packages ───────────────────────────────────────────────────────────────────
     ##  package     * version date       lib source        
@@ -136,5 +136,5 @@ packages:
     ## [4] /usr/lib/R/library
 
 All code written by Nina M. D. Schiettekatte
-(<nina.schiettekatte@gmail.com>) and Francesca Conte. Please contact me
+(<nina.schiettekatte@gmail.com>) and Francesca Conte. Please contact us
 for any issue or question.
