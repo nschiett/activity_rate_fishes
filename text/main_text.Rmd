@@ -21,12 +21,12 @@ source("../R/packages.R")
 \pagenumbering{arabic}
 
 # The use of stereo-video monitoring and physiological trials to estimate metabolic demands of reef fishes in the wild
-     
+
 
 \noindent Nina M. D. Schiettekatte^1,2\*^, Francesca Conte^1,2\*^, Beverly French^3^, Simon J. Brandl^1,2,4^, Christopher J. Fulton^5^, Alexandre Mercière^1,2^, Tommy Norin^6^, Sébastien Villéger^7^, Valeriano Parravicini^1,2^
 
 
-\singlespace \fontsize{10}{12}\selectfont 
+\singlespace \fontsize{10}{12}\selectfont
 
 \noindent ^1^ PSL Université Paris: EPHE-UPVD-CNRS, USR 3278 CRIOBE, Université de Perpignan,
 66860 Perpignan, France
@@ -52,7 +52,7 @@ source("../R/packages.R")
 
 ## Abstract
 
-Organismal metabolic rates are the basis of energy and nutrient fluxes through ecosystems. In the marine realm, fishes are the most prominent consumer species. However, their metabolic demand in the wild (field metabolic rate, FMR) is poorly documented, because it is very challenging to measure directly. Here, we introduce a novel approach to estimating the component of FMR associated with voluntary activity in nature (i.e., the field active metabolic rate, $AMR_{field}$). We do this by combining laboratory-based respirometry and field-based stereo-video systems to estimate the activity of individuals. We exemplify our approach by focusing on seven coral reef fish species, for which we quantified standard and maximum metabolic rates (SMR and MMR, respectively) in the laboratory, and body sizes and swimming speeds in the field. Based on the relationships between metabolic rate, body size, and swimming speeds, we show that the activity scope (i.e., the ratio between $AMR_{field}$ and SMR) varies from 1.2 to 3.2 across species and body sizes. Furthermore, we demonstrate that the scaling exponent for $AMR_{field}$ varies across species and can substantially exceed the widely assumed value of 0.75 for standard metabolic rates. Finally, by scaling organismal $AMR_{field}$ estimates to the assemblage level, we show the potential effect of this variability on community metabolic demand. As a non-destructive, widely applicable technique, our approach can improve our ability to estimate elemental fluxes mediated by a critically important group of aquatic animals.
+Organismal metabolic rates are the basis of energy and nutrient fluxes through ecosystems. In the marine realm, fishes are the most prominent consumer species. However, their metabolic demand in the wild (field metabolic rate, FMR) is poorly documented, because it is very challenging to measure directly. Here, we introduce a novel approach to estimating the component of FMR associated with voluntary activity in nature (i.e., the field active metabolic rate, $AMR_{field}$). Our approach combines laboratory-based respirometry and field-based stereo-video systems to estimate the activity of individuals. We exemplify our approach by focusing on seven coral reef fish species, for which we quantified standard and maximum metabolic rates (SMR and MMR, respectively) in the laboratory, and body sizes and swimming speeds in the field. Based on the relationships between metabolic rate, body size, and swimming speeds, we estimate that the activity scope (i.e., the ratio between $AMR_{field}$ and SMR) varies from 1.2 to 3.2 across species and body sizes. Furthermore, we illustrate that the scaling exponent for $AMR_{field}$ varies across species and can substantially exceed the widely assumed value of 0.75 for standard metabolic rates. Finally, by scaling organismal $AMR_{field}$ estimates to the assemblage level, we show the potential effect of this variability on community metabolic demand. As a non-destructive, widely applicable technique, our approach can improve our ability to estimate elemental fluxes mediated by a critically important group of aquatic animals.
 
 
 ## Keywords
@@ -96,27 +96,39 @@ However, this approach relies on destructive sampling and the generality of the 
 Thus, non-invasive methods to estimate FMR on many co-occurring fish species in the field are needed to better understand the contributions of fishes to ecosystem functioning.
 
 Here, we propose a new approach to estimate a major component of the FMR, the $AMR_{field}$.
-Specifically, we estimated SMR and MMR of seven reef fish species using traditional respirometry techniques in the laboratory, and then quantified *in situ* swimming speeds of the same species using underwater stereo-video systems.
+Specifically, we estimate SMR and MMR of seven reef fish species using traditional respirometry techniques in the laboratory, and then quantified *in situ* swimming speeds of the same species using underwater stereo-video systems.
 This permitted us to derive $AMR_{field}$ and the factorial scope for activity (FSA) on the basis of the theoretical relationship between metabolic rate and swimming speed, and to assess the mass-scaling exponents of $AMR_{field}$ for each species.
-By combining our results with underwater visual census data of fish size and abundance on reefs around Mo'orea, French Polynesia, we also quantified assemblage-level SMR and $AMR_{field}$.
-In doing so, we demonstrate the viability and applicability of our approach to tackle questions across fields of organismal, community, and ecosystem ecology in the marine biome.
+By combining our results with underwater visual census data of fish size and abundance on reefs around Mo'orea, French Polynesia, we also estimate assemblage-level SMR and $AMR_{field}$.
+In doing so, we demonstrate the applicability of our approach to tackle questions across fields of organismal, community, and ecosystem ecology in the marine biome.
 
 \newpage
 
 ## Methods
 
-### Summary
-Our approach is based on the relationship between swimming speed and metabolic rate [@Binning2013; @Norin2016; @Torres1983].
-Specifically, we rely on the notion that the standard metabolic rate (SMR) represents the metabolic rate of an individual when its swimming speed is zero ($v_0$), while the maximum metabolic rate (MMR) represents the oxygen uptake rate of individuals at their maximum – or critical – swimming speed ($v_{max}$)(figure 1).
-Further, we assume that metabolic rates vary predictably with swimming speed following a traditional power function [@Brett1964; @Korsmeyer2002].
-Therefore, on the basis of knowledge of SMR and MMR along with the $v_0$ and $v_{max}$ of individuals, the active field active metabolic rate ($AMR_{field}$) of a species can be estimated if the average swimming speed ($v$) of individuals for a specific body size is known.
-We estimated SMR and MMR using respirometry in the laboratory, obtained $v_{max}$ through empirical data available in the literature, and estimated $v$ using stereo-camera video recordings in the field.
-We then used these estimates of $AMR_{field}$ to quantify the factorial scope for activity (FSA), and the metabolic scaling exponent for $AMR_{field}$.
+### Theory and summary
+Our approach to quantifying the field active metabolic rate ($AMR_{field}$) is based on the relationship between swimming speed (U) and metabolic rate (MR) [@Binning2013; @Norin2016; @Torres1983] (Fig. 1). We assume that metabolic rates vary predictably with swimming speed following a traditional power function, which can be adapted to a $log_{10}$ transformed form [@Brett1964; @Korsmeyer2002]:
+$$MR = a10^{bU}$$
+$$log_{10}(MR) = log_{10}(a) + bU,$$
+We further assume that:
+(1) the standard metabolic rate (SMR) represents the metabolic rate of an individual when its swimming speed is zero and
+(2) the maximum metabolic rate (MMR) represents the oxygen uptake rate of individuals at their maximum – or critical – swimming speed ($v_{max}$)(figure 1).
+The previous equation can thus be rewritten as:
+$$log_{10}(MR) = log_{10}(SMR) + \frac{log_{10}(MMR) - log_{10}(SMR)}{v_{max}} v, $$
+and $AMR_{field}$ can then be estimated using the average swimming speed in the field ($v_{field}):
+$$log_{10}(AMR_{field}) = log_{10}(SMR) + \frac{log_{10}(MMR) - log_{10}(SMR)}{v_{max}} v_{field},$$
+
+The factorial scope of activity (FSA) can obtained by dividing a fish’s $AMR_{field}$ by their SMR. We note that the FSA tends to be calculated over a 24 period, which means that owe have to consider the amount of time spent resting. If a fish is resting for a certain amount of hours (t) a day and the metabolic rate at resting equals the SMR, the FSA can be estimated as follows:
+$$FSA = {\frac{(24-t) AMR_{field} + t SMR}{24 SMR}}.$$
+
+
+Thus, on the basis of knowledge of SMR and MMR along with the $v_{max}$ of individuals, $AMR_{field}$ of a species can be estimated if the average swimming speed in the field ($v_field$) for a specific body size is known.
+For our case study, we estimated SMR and MMR using respirometry in the laboratory, obtained $v_{max}$ through empirical data available in the literature, and estimated $v$ using stereo-camera video recordings in the field.
+We then used these estimates of $AMR_{field}$ to estimate the FSA and the metabolic scaling exponent for $AMR_{field}$.
 Finally, to evaluate the impact of assessing assemblage-level metabolic rates on the basis of a realistic proxy of field metabolic rate, $AMR_{field}$ (instead of using the more commonly measured SMR as an estimate of minimum energetic requirements), we scaled up our estimates at assemblage level according to visual census data of fish sizes and abundances on a coral reef in Mo’orea, French Polynesia.
 
 ![](figures/figure1_v2.png)
 
-Figure 1. Definition of terms used to describe aspects of fish metabolism and their inter-relationships. SMR is standard metabolic rate calculated as the oxygen uptake rate ($\dot{M}O_{2}$ at swimming speed 0 ($v_0$). $AMR_{field}$ is field active metabolic rate measured as $\dot{M}O_{2}$ at spontaneous swimming speed ($v$). FMR is field metabolic rate including $AMR_{field}$ and the energy needed for digestion and reproduction. MMR is maximum metabolic rate, which can be measured as the $\dot{M}O_{2}$ at maximum (critical) swimming speed ($U_{crit}$).
+Figure 1. Definition of terms used to describe aspects of fish metabolism and their inter-relationships. SMR is standard metabolic rate at swimming speed zero. $AMR_{field}$ is field active metabolic rate at average swimming speed in the field ($v_{max}$). MMR is maximum metabolic rate, assumed to be reached at maximum swimming speed ($v_{max}$).
 
 
 ### Model species
@@ -150,7 +162,7 @@ Final fish lengths and swimming speeds were then calculated as the mean of the r
 
 ### Maximum swimming speed
 
-We extracted maximum swimming speeds ($U_{crit}$) from previous work [@Fulton2007]. $U_{crit}$ is defined as the swimming speed at which a fish becomes exhausted and stops swimming when it is exposed to regular incremental changes in speed in an experimental flume [@Brett1964]. In these experimental conditions, $\dot{M}O_{2}$ measured at $U_{crit}$ corresponds to MMR [@Norin2016]. In the original work of @Fulton2007, $U_{crit}$ of 192 individuals of five families and their corresponding lengths were measured, and these measurements were then used in the present study to relate maximum swimming speed with body size and aspect ratio of the tail, as a proxy for variations in swimming ability. The aspect ratio of the tail of all species were retrieved from Fishbase [@Froese2014].
+We estimated maximum swimming speeds ($v_{max}$) by relying on previous work that estimated the swimming speed at which a fish becomes exhausted and stops swimming when it is exposed to regular incremental changes in speed in an experimental flume [[@Fulton2007; @Brett1964].  In the original work of @Fulton2007, maximum swimming speeds of 192 individuals of five families and their corresponding lengths were measured, and these measurements were then used in the present study to relate maximum swimming speed with body size and aspect ratio of the tail, as a proxy for variations in swimming ability, while accounting for the effect of fish family and body shape type. The aspect ratio of the tail and the body shape of all species were retrieved from Fishbase [@Froese2014].
 
 ### Data analysis
 
@@ -166,30 +178,28 @@ We obtained the mean intercept and slope per species by summing global- and spec
 
 Second, using the data retrieved from the video analyses, we fitted a hierarchical Bayesian regression model for estimating fish swimming speed as a function of body length. We defined the $log_{10}$ transformation of swimming speed to be student-t distributed with degrees of freedom ($\nu$), mean ($\mu$), and a standard deviation ($\sigma$).The student’s t-distribution was applied to build a robust regression, as our data includes outliers [@Motulsky2006].
 
-$$\textrm{log}_{10}(\textrm{speed}_{i}) \sim \textrm{Student}(\nu, \mu_{i}, \sigma),$$
+$$\textrm{log}_{10}(\textrm{v}_{i}) \sim \textrm{Student}(\nu, \mu_{i}, \sigma),$$
 $$\mu_{i} = (a + a_{j}) + (b + b_{j})\textrm{log}_{10}(\textrm{length}_i),$$
 
-where $i$ is the individual, $j$ is the species, $a$ is the global intercept of the regression, $a_j$ is the effect on the intercept for each species, $b$ is the global slope , $b_j$ is the effect on the slope of for each species. For each species, regression exponents were estimated by summing two effects of the model: the global parameter and the species-specific effect on the global parameter.
+where $v$ is the swimming speed, $i$ is the individual, $j$ is the species, $a$ is the global intercept of the regression, $a_j$ is the effect on the intercept for each species, $b$ is the global slope , $b_j$ is the effect on the slope of for each species. For each species, regression exponents were estimated by summing two effects of the model: the global parameter and the species-specific effect on the global parameter.
 
 Thirdly, we fitted a similar model to predict maximum swimming speed in function of body length and aspect ratio using data extracted from @Fulton2007, including random effects of the interaction between family and body shape on the intercept and slope of body size.:
 
 $$log_{10}(maxspeed_{i}) \sim Student(\nu, \mu_{i}, \sigma),$$
 $$\mu_{i} = (a + a_{j}) + (b + b_{j})log_{10}(length_i) + AR,$$
 
-where $i$ ,$j$ is the interaction of family and body shape, $a$ is the global intercept of the regression, $a_j$ is the effect on the intercept for each family and body shape, $b$ is the global slope , $b_j$ is the effect on the slope for each family and body shape, and $AR$ is the aspect ratio of the tail.
-Here, we also applied the Student’s t-distribution and used general uninformative priors. We then used this model to estimate the maximum swimming speed of the species included in our study. Aspect ratio's were extracted from Fishbase [@Froese2014].
+where $i$ is the individual ,$j$ is the interaction of family and body shape, $a$ is the global intercept of the regression, $a_j$ is the effect on the intercept for each family and body shape, $b$ is the global slope , $b_j$ is the effect on the slope for each family and body shape, and $AR$ is the aspect ratio of the tail.
+Here, we also applied the Student’s t-distribution and used general uninformative priors. We then used this model to estimate the maximum swimming speed of the species included in our study.
 
 ### Factorial aerobic scope, field active metabolic rate, and factorial scope for activity calculations
 
-We predicted the factorial aerobic scope (FAS), field active metabolic rate ($AMR_{field}$), and factorial scope for activity (FSA) for the full size range of all model species (per cm).
-To estimate the fish’s FAS at each possible length, we first predicted their SMR and MMR by calculating their weight using published length-weight relationship accessed through FishBase [@Froese2014], and making predictions based on our model parameters.
-For each iteration of the prediction, FAS was calculated as $FAS = \frac{MMR}{SMR}$ [@Fry1947; @Killen2016].
+We estimated the factorial aerobic scope (FAS), field active metabolic rate ($AMR_{field}$), and factorial scope for activity (FSA) for the full size range of all model species (per cm).
+To estimate the fish’s FAS at each possible length, we first predicted their SMR and MMR by estimating their weight using published length-weight relationship accessed through FishBase [@Froese2014], and making predictions based on our model parameters.
+For each iteration of the prediction, ze calculated FAS as $FAS = \frac{MMR}{SMR}$ [@Fry1947; @Killen2016].
 Finally, we summarized the FAS for each species at all sizes by taking means, standard deviations, and 95% credible intervals.
 
-FSA is obtained by dividing the fish’s $AMR_{field}$ ($\dot{M}O_{2}$ at average speed $U$) by their SMR. To describe the relationship between $\dot{M}O_{2}$ and swimming speed ($U$), Brett (1964) [@Brett1964] used a traditional power function: $\dot{M}O_{2} = a10^{bU}$ . Here, we applied the $log_{10}$-transformed form [@Korsmeyer2002]. Consequently, the following equation was used in this study to determine individual $AMR_{field}$:
-$$log(AMR_{field}) = log(SMR) + \frac{log(MMR) - log(SMR)}{U_{crit}} U,$$
-
-where we consider the slope $b = \frac{log(MMR) - log(SMR)}{U_{crit}}$. Here, $U$ is predicted through our model relating length and swimming speed, $U_{crit}$ is predicted for each length and species using our model for family-level maximum swimming speeds, and SMR and MMR is predicted as stated above. To include an estimate of uncertainty, we included 1000 iterations of estimates of the swimming speed $U$. For $U_{crit}$, SMR and MMR we used the median of the predicted values in this step.
+To estimate $AMR_{field}$, we needed the SMR, MMR, $v_{max}$, and $v_{field}$ ($log(AMR_{field}) = log_{}(SMR) + \frac{log(MMR) - log(SMR)}{v_{max}} v_{field}$)
+For each length and species, we estimated $v_{field}$, $v_{max}$, SMR, and MMR using the above mentioned regression models. To incorporate an estimate of uncertainty, we included 1000 iterations for v_{field}$.  For $v_{max}$, SMR and MMR we used the median of the predicted values in this step.
 
 Once we determined $AMR_{field}$, we calculated FSA with the following equation:
 $$FSA = {\frac{12 AMR_{field} + 12 SMR}{24 SMR}}.$$
@@ -209,8 +219,8 @@ Finally, we calculated the total SMR and $AMR_{field}$ of the fish assemblage co
 
 ## Results
 
-### Standard and maximum metabolic rates 
-\noindent The regression model predicting metabolic rates (log~10~ of SMR and MMR) as a function of log~10~ of body mass with varying slopes and intercepts per species had a Bayesian R^2^ of 0.96 (Table 1; Figure 2). The average metabolic scaling exponent across species was 0.73 for SMR and 0.78 for MMR (Table 1). The median species-specific scaling exponents varied between 0.71 and 0.76 for SMR, and between 0.77 and 0.78 for MMR. 
+### Standard and maximum metabolic rates
+\noindent The regression model predicting metabolic rates (log~10~ of SMR and MMR) as a function of log~10~ of body mass with varying slopes and intercepts per species had a Bayesian R^2^ of 0.96 (Table 1; Figure 2). The average metabolic scaling exponent across species was 0.73 for SMR and 0.78 for MMR (Table 1). The median species-specific scaling exponents varied between 0.71 and 0.76 for SMR, and between 0.77 and 0.78 for MMR.
 
 ```{r c7t1, echo = FALSE}
 table <- drake::readd(table_mr)
@@ -221,8 +231,8 @@ flextable(table) %>%
    set_caption("Overview of species-specific slope coefficients (scaling exponents) of the regression of $log_{10}$-transformed SMR and MMR on function of $log_{10}$-transformed body mass. The intercept for each species is expressed as the back-transformed value for an individual of 1g. Values in between brackets represent the 95\\% CI.") %>%
    fit_to_width(8.5)
 ```
-\newpage         
-          
+\newpage
+
 ```{r, echo = FALSE, fig.width = 10, fig.height = 6, fig.fullwidth = TRUE, fig.cap = "Figure 2. Linear regressions between log~10~-transformed metabolic rate (g O~2~ d^−1^) and weight (g) for the study species, predicted by model 1. Symbols represent empirical measurements. Solid and dashed lines represent predicted mean standard metabolic rate (SMR) and maximum metabolic rate (MMR) values, respectively. Transparent areas are the 95% credible intervals of the fitted values of the regression."}
 
 readd(plot_mr)
@@ -230,11 +240,11 @@ readd(plot_mr)
 ```
 
 \newpage
-### Swimming speed 
-\noindent  The regression model predicting species-specific swimming speed as a function of body size had a median Bayesian R^2^ of 0.57 and its residual variance ($\sigma$) was 0.37. 
-The average species-specific slope values varied between 0.18 and 0.97 (Figure 3, Table S2). 
+### Swimming speed
+\noindent  The regression model predicting species-specific swimming speed as a function of body size had a median Bayesian R^2^ of 0.57 and its residual variance ($\sigma$) was 0.37.
+The average species-specific slope values varied between 0.18 and 0.97 (Figure 3, Table S2).
 At the individual scale, the 95% credible interval of swimming speed predictions varied between 28.5 and 32.4 cm s^−1^ across all species and size classes. For maximum swimming speed, our model showed an increase with body size and aspect ratio (Table S3), with a median Bayesian R^2^ of 0.46. We then used this model to estimate maximum swimming speeds (Figure 3).
-            
+
 
 ```{r, echo = FALSE, fig.width = 10, fig.height = 6, fig.fullwidth = TRUE, fig.cap = "Figure 3. Linear regressions between log~10~-transformed speed (cm s^−1^) and length (cm) for the seven studied fish species. Symbols represent the raw data of individuals measured through stereo-video analysis. Solid lines and shaded areas represent the predicted mean values, and associated 95% credible interval of swimming speeds. The dashed lines represent the predicted maximum swimming speeds."}
 
@@ -243,8 +253,8 @@ readd(plot_speed)
 ```
 
 ### Field metabolic rate, factorial aerobic scope and factorial scope for activity estimations
-\noindent  We estimated $AMR_{field}$, FAS, and FSA across the size range of our study species as observed in the monitoring dataset from Mo'orea in 2016. 
-Across all species and size classes, average $AMR_{field}$ estimates ranged between 0.001 and 1.013 g O~2~ d^−1^ at the individual level (Table S4). FAS and FSA estimates range between 2.4 and 7.0, and between 1.2 and 3.2, respectively, across species and sizes. The scaling exponent of $AMR_{field}$ was higher than the SMR exponent for all species, except for *C. striatus* (Figure 4a), hence, FSA increased with size for all those species (Figure 4b). The scaling exponent of $AMR_{field}$ was considerably higher than the MMR exponents for *N. lituratus* and *O. niger*. 
+\noindent  We estimated $AMR_{field}$, FAS, and FSA across the size range of our study species as observed in the monitoring dataset from Mo'orea in 2016.
+Across all species and size classes, average $AMR_{field}$ estimates ranged between 0.001 and 1.013 g O~2~ d^−1^ at the individual level (Table S4). FAS and FSA estimates range between 2.4 and 7.0, and between 1.2 and 3.2, respectively, across species and sizes. The scaling exponent of $AMR_{field}$ was higher than the SMR exponent for all species, except for *C. striatus* (Figure 4a), hence, FSA increased with size for all those species (Figure 4b). The scaling exponent of $AMR_{field}$ was considerably higher than the MMR exponents for *N. lituratus* and *O. niger*.
 \newpage
 
 ```{r, echo = FALSE, fig.width = 8, fig.height = 8, fig.fullwidth = TRUE, fig.cap = "Figure 4. a) Fitted scaling exponents for standard metabolic rate (SMR), maximum metabolic rate (MMR), and field metabolic rate (AMR~field~) based on slopes of the log~10~-log~10~ relationships between the metabolic rates (g O~2~ d^−1^) and body mass (g). Lines represent the 95% credible interval and dots indicate the average values. b) Predicted average factorial scope for activity (FSA) for the seven reef fish species across their body size range."}
@@ -306,21 +316,24 @@ However, if a community includes species that have a much higher metabolic scali
 Thus, it is important to consider a higher variation in metabolic scaling of FMR than previously assumed if we want to estimate energy flow in fish communities.
 
 While our approach offers a novel way to estimate the activity rate and metabolism of fishes, it comes with some limitations.
-First, we used family-level maximum swimming speeds to reconstruct the relationship between metabolic rate and swimming speed [@Fulton2007].
-Although we accounted for variation in body shapes, this may introduce some bias into the calculations, as species within a family and body shape can differ substantially.
-Further, our method relies on the assumption that metabolic rate varies predictively with swimming speed following a traditional power function [@Brett1964; @Korsmeyer2002]. Ideally, this relationship should be verified empirically by measuring swimming speed and respiration rate simultaneously in the laboratory.
+First, we extrapolated maximum swimming speeds for our study species based on literature data to reconstruct the relationship between metabolic rate and swimming speed [@Fulton2007].
+Although we accounted for size, family, variation in body shapes and swimming ability, this may introduce bias into the calculations, since species within a family and body shape may differ.
+Further, our method relies on the assumption that metabolic rate varies predictively with swimming speed following a traditional power function [@Brett1964; @Korsmeyer2002]. While this power function has been found to accurately predict metabolic rate for multiple species, more complex functions may be optimal for different species. Future studies should aim to verify this relationship empirically by measuring swimming speed and respiration rate simultaneously in the laboratory and our approach can be adapted according to the best fitting equation.
+
+
 Furthermore, we quantified FSA assuming that fishes’ spontaneous swimming activity follows strict circadian cycles, with all activity occurring diurnally.
 However, activity patterns of reef fishes are often flexible [@Zhdanova2006].
 While, in principle, all our studied families are diurnally active, some species, (e.g., Serranidae) can be nocturnally active [@Mourier2016].
 Thus, our assumption can cause potential underestimates of FSA in *C. argus* and other species with more flexible circadian activity patterns.
 Currently, stereo-video recordings are unable to quantify fish swimming speeds at night, as measurements are inaccurate and imprecise in darkness and poor visibility [@Neuswanger2016].
-However, infrared lighting in stereo-video recordings could provide a solution to observe nocturnal behavior and movement in fishes [@Bassett2011]. \par
+However, infrared lighting in stereo-video recordings could provide a solution to observe nocturnal behavior and movement in fishes [@Bassett2011]. \
 
-Finally, while $AMR_{field}$ than SMR or routine metabolic rate (the average laboratory-estimated metabolic rate of fish kept in respirometry chambers, which includes spontaneous activity; @Norin2020, it still doesn not include all energy expenditure of fishes in the wild, such as reproduction and digestion.
-Digestion (often expressed as specific dynamic action; SDA) can be a large component of the energy budget of fishes (e.g., ~17% of SMR; @Holt2015).
+
+Finally, while $AMR_{field}$ represents an improved estimate of energy expenditure in the field, it still lacks components such as reproduction and digestion.
+Digestion (often expressed as specific dynamic action; SDA) can be a large component of the energy budget of certain fishes (e.g., ~17% of SMR; @Holt2015).
 SDA can be measured in the laboratory, where a fish is given a meal and the oxygen consumption is measured for the duration of the digestion of this meal.
 SDA relates predictively to both meal size and body mass of a fish [@Secor2009], but using this relationship to calculate SDA of species in natural communities is not feasible.
-It is nearly impossible to track frequency of meals and meal sizes of fishes in the wild, even though some bioenergetic modeling allows for an approximation of consumption rates (e.g., @Schiettekatte2020).
+It is nearly impossible to track frequency of meals and meal sizes of fishes in the wild, even though some bioenergetic modeling allows for an approximation of daily consumption rates (e.g., @Schiettekatte2020).
 Further, these experiments are largely based on predatory fishes, and do not necessarily represent natural feeding behavior as many fishes do not consume and digest a meal before eating the next meal.
 Notably, herbivores and detritivores, but also planktivores, feed constantly, and their energy expenditure related to digestion is understudied.
 Therefore, we stress the need for more research on the energy consumption of digestion across a wide range of fishes to achieve improved FMR approximations for fish communities in the wild.
@@ -332,12 +345,12 @@ While the post-hoc treatment of the stereo-video outputs demands significant tim
 
 ## Acknowledgements
 We thank the staff at CRIOBE, Moorea for field support. Further we would like to express gratitude to Camille Gache and Yann Lacube for their help in the field. Finally, we thank CRIOBE for sharing UVC data from their long-term monitoring program.
-   
+
 ## Funding
 This work was supported by the BNP Paribas Foundation as a part of the ReefServices project and the Agence National de la Recherche (REEFLUX, ANR-17-CE32-0006). TN was supported by funding from the Danish Council for Independent Research (DFF-4181-00297) and the European Union’s Horizon 2020 research and innovation program under the Marie Skłodowska-Curie grant agreement No. 713683.
 
 ## Author contributions
-NMDS conceived the idea and FC, NMDS, and VP designed methodology; BF and NMDS recorded *in situ* stereo-videos; FC performed video analysis; AM and NMDS collected fishes and AM performed respirometry experiments; CJF collected data on maximum swimming speed; FC and NMDS analysed the data and led the writing of the manuscript. All authors contributed significantly to the drafts and approved the final version for publication.
+NMDS conceived the idea and FC, NMDS, and VP designed methodology; BF and NMDS recorded *in situ* stereo-videos; FC performed video analysis; AM and NMDS collected fishes and AM performed respirometry experiments; CJF collected data on maximum swimming speed; FC and NMDS analysed the data and led the writing of the manuscript. All authors contributed significantly to the drafts and approved the final version for publication. kjhfbvksdv 
 
 
 ## Supporting information
@@ -356,9 +369,9 @@ flextable(table) %>%
   fontsize(size = 8) %>%
   fontsize(size = 10, part = "header") %>%
   set_caption("Table S2: Overview of species-specific slope and intercept coefficients for the regression of natural log-transformed swimming speed on natural log-transformed body length (in cm). The 95% credible interval is displayed in the parentheses.") %>%
-  autofit() 
+  autofit()
 ```
-\newpage      
+\newpage
 
 
 ```{r, echo = FALSE, warning=FALSE, message=FALSE}
@@ -372,20 +385,20 @@ flextable(table) %>%
   set_caption("Table S3: Overview of regression parameters of log10-transformed maximum swimming speed as function of log10-transformed body length (in cm), aspect ratio, and with varying intercepts and slopes per interaction of family and body shape.") %>%
   autofit()
 ```
-\newpage     
+\newpage
 ```{r, echo = FALSE, warning=FALSE, message=FALSE}
 table <- drake::readd(field_summary) %>%
   mutate_if(is.numeric, round, 3) %>%
   select(-logFMR_m, -logFMR_sd) %>%
   select_at(vars(contains("_m"))) %>%
-  select(Family, Species = species, length = Size, 
+  select(Family, Species = species, length = Size,
          SMR = smr_m, MMR = mmr_m, FMR = FMR_m, FAS = FAS_m, FSA = FSA_m)
 flextable(table) %>%
   fontsize(size = 8) %>%
   fontsize(size = 8, part = "header") %>%
   italic(j = 2) %>%
   set_caption("Table S4: Overview of average species- and size-specific estimates of standard metabolic rate (SMR, in g O~2~ d^−1^), maximum metabolic rate (MMR, in g O~2~ d^−1^), field active metabolic rate (AMR~field~, in g O~2~ d^−1^), factorial aerobic scope (FAS), and factorial scope for activity (FSA). Length is expressed in cm.") %>%
-  autofit() 
+  autofit()
 ```
 \newpage
 ```{r, echo = FALSE, fig.width = 10, fig.height = 6, fig.fullwidth = TRUE, fig.cap = "Figure S5. Fish abundance (m^-2^) of the studied sites. Each colour represents the abundance of a specific studied reef fish species."}
@@ -397,10 +410,3 @@ knitr::include_graphics("../output/plots/community_plot_abundance.png")
 
 \newpage
 ## References
-
-
-
-
-
-
-

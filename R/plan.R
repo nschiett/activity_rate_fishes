@@ -23,7 +23,7 @@ plan <- drake_plan(
   reference = create_reference(moorea),
   ### 2) get fmr, fsa, fas
   field_summary = get_fmr(reference, mod_speed, mod_speedmax, mod_mr),
-  ### 3) get metabolic scaling 
+  ### 3) get metabolic scaling
   slopes = get_slopes(field_summary, mod_mr),
   ## figures
   plot_mr = make_plot_mr(mod_mr, respiro),
@@ -37,12 +37,12 @@ plan <- drake_plan(
   plot_annex = make_plot_sizecor(),
   fig1 = load_fig1(),
   ## text
-  main_text_doc = rmarkdown::render(knitr_in("text/main_text.Rmd"), 
-                                    output_format = "word_document", 
+  main_text_doc = rmarkdown::render(knitr_in("text/main_text.Rmd"),
+                                    output_format = "word_document",
                                     output_dir = "./output/text/",
-                                    output_file = "main.docx"),
-  main_text_pdf = rmarkdown::render(knitr_in("text/main_text.Rmd"), 
-                                    output_format = "pdf_document", 
-                                    output_dir = "./output/text/",
-                                    output_file = "main.pdf")
+                                    output_file = "main.docx")#,
+  # main_text_pdf = rmarkdown::render(knitr_in("text/main_text.Rmd"),
+  #                                   output_format = "pdf_document",
+  #                                   output_dir = "./output/text/",
+  #                                   output_file = "main.pdf")
 )
