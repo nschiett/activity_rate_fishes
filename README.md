@@ -1,4 +1,4 @@
-# SThe use of stereo-video monitoring and physiological trials to estimate metabolic demands of reef fishes in the wild
+# The use of stereo-video monitoring and physiological trials to estimate metabolic demands of reef fishes in the wild
 
 This repository contains the code and data to reproduce all tables and
 figures presented in Schiettekatte, Conte et al. “The use of
